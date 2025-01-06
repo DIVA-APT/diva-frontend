@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { MainTitle, SubTitle } from '../components/main/header';
 import { isEmptyString } from '../utils/string';
+import StockHint from '../components/main/StockHint';
+import { stockList } from '../utils/stockList';
 
 const MainPage = () => {
   const [input, setInput] = useState('');
+  const [hintList, setHintList] = useState([]);
 
   const handleButtonClick = (e) => {
     e.preventDefault();
@@ -13,7 +16,15 @@ const MainPage = () => {
       return;
     }
 
-    alert(input);
+    setHintList(
+      stockList
+        .filter((e) => e.stock_name.toLowerCase().includes(input.toLowerCase()))
+        .sort((a, b) =>
+          a.stock_name
+            .toLowerCase()
+            .localeCompare(b.stock_name.toLowerCase(), 'ko')
+        )
+    );
   };
 
   return (
@@ -64,6 +75,26 @@ const MainPage = () => {
                 </div>
               </div>
             </form>
+          </div>
+          <div
+            className='mt-5'
+            style={{
+              height: '50vh',
+              overflowY: 'scroll',
+              scrollbarWidth: 'none',
+            }}
+          >
+            {hintList.map((e, index) => (
+              <StockHint
+                key={e.corp_code}
+                name={e.stock_name}
+                style={
+                  index === hintList.length - 1
+                    ? { borderBottom: '1px solid #d6dbd6' }
+                    : {}
+                }
+              />
+            ))}
           </div>
         </div>
       </div>
