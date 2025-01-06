@@ -86,7 +86,7 @@ const MainPage = () => {
           >
             {hintList.map((e, index) => (
               <StockHint
-                key={e.corp_code}
+                key={index}
                 name={e.stock_name}
                 style={
                   index === hintList.length - 1
