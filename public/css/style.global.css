@@ -76,6 +76,12 @@
   --bs-link-hover-color: #3e52c6;
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff3cd;
+
+  /* 주 컬러 4가지 */
+  --color-1: #001f3f;
+  --color-2: #3a6d8c; 
+  --color-3: #6a9ab0; 
+  --color-4: #ead8b1;
 }
 
 *,
@@ -15959,7 +15965,7 @@ textarea.form-control-lg {
   margin-bottom: 0;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #6c757d;
+  color: var(--color-2);
   font-weight: bold;
 }
 
