@@ -13,7 +13,7 @@ const StockHint = (props) => {
 
   return (
     <div
-      class='card-body py-3'
+      className='card-body py-3'
       style={{
         display: 'flex',
         justifyContent: 'space-around',
@@ -25,15 +25,15 @@ const StockHint = (props) => {
       }}
     >
       <strong
-        class='d-inline-block'
+        className='d-inline-block'
         style={{ width: '30%', fontSize: '1.5rem', color: 'var(--color-2)' }}
       >
         {props.name}
       </strong>
-      <p class='text-muted m-0' style={{ fontWeight: '600' }}>
+      <p className='text-muted m-0' style={{ fontWeight: '600' }}>
         KOSPI
       </p>
-      <button class='p-0 btn btn-link' onClick={handleButtonClick}>
+      <button className='p-0 btn btn-link' onClick={handleButtonClick}>
         <FontAwesomeIcon
           icon={faCircleArrowRight}
           style={{ fontSize: '1.8rem' }}

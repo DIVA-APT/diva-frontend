@@ -3,7 +3,7 @@ import React from 'react';
 const MainTitle = (props) => {
   return (
     <h1
-      class='display-3 fw-bold text-shadow text-center'
+      className='display-3 fw-bold text-shadow text-center'
       style={{ color: 'var(--color-1)' }}
     >
       {props.text}
