@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import MainPage from './pages/MainPage';
 import DetailPage from './pages/DetailPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +15,7 @@ root.render(
         <Route index element={<MainPage />} />
         <Route path='/a' element={<DetailPage />} />
       </Route>
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
   </BrowserRouter>
 );
