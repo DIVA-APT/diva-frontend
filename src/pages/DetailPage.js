@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router';
 
 const DetailPage = () => {
   const [showVisualization, setShowVisualization] = useState(false); // 이미지 표시 상태를 관리합니다.
   const [showReferences, setShowReferences] = useState(false); // 참고 자료 및 출처 표시 상태를 관리합니다.
+
+  const { state } = useLocation();
 
   return (
     <div>
@@ -16,7 +19,7 @@ const DetailPage = () => {
           padding: '20px 0',
         }}
       >
-        <h2 className='mb-md-0'>삼성전자</h2>
+        <h2 className='mb-md-0'>{state.stock_name}</h2>
         <p className='subtitle text-secondary'>
           Current Price: 50,000 | Change: +1.23%
         </p>

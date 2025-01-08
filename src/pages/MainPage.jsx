@@ -69,6 +69,7 @@ const MainPage = () => {
                   <button
                     className='btn btn-primary rounded-pill h-100'
                     type='button'
+                    onClick={handleButtonClick}
                   >
                     Search
                   </button>
@@ -87,7 +88,7 @@ const MainPage = () => {
             {hintList.map((e, index) => (
               <StockHint
                 key={index}
-                name={e.stock_name}
+                data={e}
                 style={
                   index === hintList.length - 1
                     ? { borderBottom: '1px solid #d6dbd6' }
