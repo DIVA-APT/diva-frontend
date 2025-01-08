@@ -7,8 +7,9 @@ const StockHint = (props) => {
   const naviation = useNavigate();
 
   const handleButtonClick = () => {
-    alert('이동');
-    // naviation('/dd');
+    naviation(`/detail/${props.data.stock_code}`, {
+      state: { stock_name: props.data.stock_name },
+    });
   };
 
   return (
@@ -28,7 +29,7 @@ const StockHint = (props) => {
         className='d-inline-block'
         style={{ width: '30%', fontSize: '1.5rem', color: 'var(--color-2)' }}
       >
-        {props.name}
+        {props.data.stock_name}
       </strong>
       <p className='text-muted m-0' style={{ fontWeight: '600' }}>
         KOSPI
