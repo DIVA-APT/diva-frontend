@@ -36,7 +36,6 @@ const DetailPage = () => {
           className='btn btn-outline-primary'
           style={{ margin: '0 10px' }}
           href='#'
-          role='button'
         >
           재무 현황
         </button>
@@ -44,7 +43,6 @@ const DetailPage = () => {
           className='btn btn-outline-primary'
           style={{ margin: '0 10px' }}
           href='#'
-          role='button'
         >
           정책 동향 및 관련 뉴스
         </button>
@@ -52,7 +50,6 @@ const DetailPage = () => {
           className='btn btn-outline-primary'
           style={{ margin: '0 10px' }}
           href='#'
-          role='button'
         >
           전문가 분석
         </button>
@@ -60,7 +57,6 @@ const DetailPage = () => {
           className='btn btn-outline-primary'
           style={{ margin: '0 10px' }}
           href='#'
-          role='button'
         >
           소셜 트렌드
         </button>
