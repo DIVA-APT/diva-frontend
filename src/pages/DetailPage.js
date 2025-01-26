@@ -2,10 +2,21 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router';
 
 const DetailPage = () => {
-  const [showVisualization, setShowVisualization] = useState(false); // 이미지 표시 상태를 관리합니다.
-  const [showReferences, setShowReferences] = useState(false); // 참고 자료 및 출처 표시 상태를 관리합니다.
-
+  const [content, setContent] = useState('내용을 선택해 주세요.');
+  const [showVisualization, setShowVisualization] = useState(false);
+  const [showReferences, setShowReferences] = useState(false);
   const { state } = useLocation();
+  const [report, setReport] = useState('');
+
+  // 임시 데이터
+  const data = {
+    finance: '재무 제표 현황을 보여준다.',
+    macroeconomics: '정책 동향 거시 경제 관련 내용이 들어온다.',
+    investmentMovement: '시장 심리와 투자 동향을 알려준다.',
+    expertAnalysis: '전문가들이 분석한 내용이 들어온다.',
+    news: '뉴스 데이터가 들어옵니다.',
+    report: '종합 리포트 내용이 들어옵니다.',
+  };
 
   return (
     <div>
@@ -35,30 +46,37 @@ const DetailPage = () => {
         <button
           className='btn btn-outline-primary'
           style={{ margin: '0 10px' }}
-          href='#'
+          onClick={() => setContent(data.finance)}
         >
-          재무 현황
+          재무 제표
         </button>
         <button
           className='btn btn-outline-primary'
           style={{ margin: '0 10px' }}
-          href='#'
+          onClick={() => setContent(data.macroeconomics)}
         >
-          정책 동향 및 관련 뉴스
+          거시 경제 및 정책
         </button>
         <button
           className='btn btn-outline-primary'
           style={{ margin: '0 10px' }}
-          href='#'
+          onClick={() => setContent(data.investmentMovement)}
+        >
+          시장 심리 및 투자 동향
+        </button>
+        <button
+          className='btn btn-outline-primary'
+          style={{ margin: '0 10px' }}
+          onClick={() => setContent(data.expertAnalysis)}
         >
           전문가 분석
         </button>
         <button
           className='btn btn-outline-primary'
           style={{ margin: '0 10px' }}
-          href='#'
+          onClick={() => setContent(data.news)}
         >
-          소셜 트렌드
+          뉴스
         </button>
       </div>
 
@@ -74,12 +92,12 @@ const DetailPage = () => {
         <div
           style={{
             width: '100%',
-            height: '150px',
+            minHeight: '150px',
             border: 'none',
             padding: '10px',
           }}
         >
-          재무 관련 요약
+          {content}
         </div>
       </div>
 
@@ -99,6 +117,7 @@ const DetailPage = () => {
               onClick={() => {
                 setShowVisualization(false);
                 setShowReferences(false);
+                setReport(data.report);
               }}
             >
               종합 리포트 생성
@@ -106,7 +125,7 @@ const DetailPage = () => {
           </li>
           <li className='nav-item'>
             <button
-              className='nav-link btn active'
+              className='nav-link btn'
               onClick={() => {
                 setShowVisualization(!showVisualization);
                 setShowReferences(false);
@@ -127,6 +146,14 @@ const DetailPage = () => {
             </button>
           </li>
         </ul>
+        {!showVisualization && !showReferences && (
+          <div
+            style={{ maxWidth: '800px', margin: '20px auto', display: 'block' }}
+          >
+            {report}
+          </div>
+        )}
+
         {showVisualization && (
           <div
             style={{ maxWidth: '800px', margin: '20px auto', display: 'block' }}
