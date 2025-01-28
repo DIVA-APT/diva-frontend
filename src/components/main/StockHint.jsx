@@ -22,6 +22,7 @@ const StockHint = (props) => {
         width: '75%',
         margin: '0 auto',
         borderTop: '1px solid #d6dbd6',
+        backgroundColor: 'white',
         ...props.style,
       }}
     >

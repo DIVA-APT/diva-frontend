@@ -29,8 +29,8 @@ const MainPage = () => {
 
   return (
     <div
-      className='container text-white z-index-20'
-      style={{ margin: '200px auto 30px' }}
+      className='text-white z-index-20'
+      style={{ padding: '200px 150px', backgroundColor: '#EAD8B1' }}
     >
       <div className='row' style={{ justifyContent: 'center' }}>
         <div className='col-xl-10'>
@@ -78,7 +78,7 @@ const MainPage = () => {
             </form>
           </div>
           <div
-            className='mt-5'
+            className='mt-1'
             style={{
               height: '50vh',
               overflowY: 'scroll',
