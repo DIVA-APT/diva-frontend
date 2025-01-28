@@ -1,0 +1,71 @@
+/* 챗봇 버튼 (아이콘) */
+.chatbot-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  border: none;
+  background-color: #007bff; /* 원하는 색상 */
+  color: #fff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 9999; /* 다른 요소보다 위에 보이도록 */
+}
+
+/* 챗봇 창 */
+.chatbot-window {
+  position: fixed;
+  right: 20px;
+  bottom: 80px; /* 버튼보다 위로 띄우기 */
+  width: 300px;
+  height: 400px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 챗봇 헤더 영역 */
+.chatbot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+}
+
+/* 챗봇 본문 */
+.chatbot-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+/* 챗봇 푸터 영역 */
+.chatbot-footer {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.chatbot-footer input {
+  flex: 1;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.user {
+  color: blue;
+  text-align: right;
+}
+
+.bot {
+  color: green;
+  text-align: left;
+}

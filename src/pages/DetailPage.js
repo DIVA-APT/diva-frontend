@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router';
 import axios from 'axios';
+import ChatBotButton from '../components/ChatBotButton';
 
 const DetailPage = () => {
   const [content, setContent] = useState('내용을 선택해 주세요.');
@@ -305,6 +306,7 @@ const DetailPage = () => {
           </div>
         )}
       </div>
+      <ChatBotButton />
     </div>
   );
 };
