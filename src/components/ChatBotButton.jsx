@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './ChatBotButton.css';
 
 const ChatBotButton = () => {
@@ -10,28 +11,34 @@ const ChatBotButton = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleInputChange = (event) => {
-    setUserInput(event.target.value);
-  };
+  const handleSendMessage = async () => {
+    if (!userInput.trim()) return;
 
-  const handleSendMessage = () => {
-    const newMessage = { type: 'user', text: userInput };
-    setMessages([...messages, newMessage]);
+    setMessages((prev) => [...prev, { type: 'user', text: userInput }]);
 
-    const botResponse = generateResponse(userInput);
-    setMessages((messages) => [
-      ...messages,
-      { type: 'bot', text: botResponse },
-    ]);
-    setUserInput('');
-  };
+    try {
+      const response = await axios.post('http://localhost:8080/api/chat', {
+        message: userInput,
+      });
 
-  const generateResponse = (input) => {
-    // 여기에 응답 로직 구현
-    if (input.toLowerCase().includes('안녕')) {
-      return '안녕하세요! 어떻게 도와드릴까요?';
+      if (response.data && response.data.botMessage) {
+        setMessages((prev) => [
+          ...prev,
+          { type: 'bot', text: response.data.botMessage },
+        ]);
+      } else {
+        // 예상치 못한 응답 처리
+        setMessages((prev) => [...prev, { type: 'bot', text: '응답 실패' }]);
+      }
+    } catch (error) {
+      console.error(error);
+      setMessages((prev) => [
+        ...prev,
+        { type: 'bot', text: '에러가 발생했습니다.' },
+      ]);
     }
-    return '질문을 조금 더 구체적으로 해주세요.';
+
+    setUserInput('');
   };
 
   return (
@@ -49,18 +56,21 @@ const ChatBotButton = () => {
             <button onClick={toggleChatbot}>X</button>
           </div>
           <div className='chatbot-body'>
-            {messages.map((msg, index) => (
-              <p key={index} className={msg.type}>
+            {messages.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`message ${msg.type === 'user' ? 'user' : 'bot'}`}
+              >
                 {msg.text}
-              </p>
+              </div>
             ))}
           </div>
           <div className='chatbot-footer'>
             <input
               type='text'
               value={userInput}
-              onChange={handleInputChange}
-              placeholder='메시지를 입력하세요...'
+              onChange={(e) => setUserInput(e.target.value)}
+              placeholder='질문을 입력하세요...'
             />
             <button onClick={handleSendMessage}>전송</button>
           </div>
