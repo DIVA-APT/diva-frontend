@@ -11,8 +11,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
+      <Route index element={<MainPage />} />
       <Route path='/' element={<App />}>
-        <Route index element={<MainPage />} />
         <Route path='/detail/:code' element={<DetailPage />} />
       </Route>
       <Route path='*' element={<NotFoundPage />} />
