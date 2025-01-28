@@ -72,3 +72,9 @@
   text-align: left;
   color: #007bff;
 }
+
+.loading {
+  color: #007bff;
+  text-align: center;
+  padding: 10px;
+}

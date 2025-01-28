@@ -6,32 +6,34 @@ const ChatBotButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [userInput, setUserInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleChatbot = () => {
     setIsOpen(!isOpen);
   };
 
   const handleSendMessage = async () => {
-    if (!userInput.trim()) return;
+    if (!userInput.trim() || isLoading) return;
 
     setMessages((prev) => [...prev, { type: 'user', text: userInput }]);
+    setIsLoading(true);
 
     try {
       const response = await axios.post('http://localhost:8080/api/chat', {
         message: userInput,
       });
-
+      setIsLoading(false);
       if (response.data && response.data.botMessage) {
         setMessages((prev) => [
           ...prev,
           { type: 'bot', text: response.data.botMessage },
         ]);
       } else {
-        // 예상치 못한 응답 처리
         setMessages((prev) => [...prev, { type: 'bot', text: '응답 실패' }]);
       }
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
       setMessages((prev) => [
         ...prev,
         { type: 'bot', text: '에러가 발생했습니다.' },
@@ -39,6 +41,12 @@ const ChatBotButton = () => {
     }
 
     setUserInput('');
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSendMessage();
+    }
   };
 
   return (
@@ -64,13 +72,15 @@ const ChatBotButton = () => {
                 {msg.text}
               </div>
             ))}
+            {isLoading && <div className='loading'>잠시만 기다려주세요...</div>}{' '}
           </div>
           <div className='chatbot-footer'>
             <input
               type='text'
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
-              placeholder='질문을 입력하세요...'
+              onKeyDown={handleKeyDown}
+              placeholder='질문을 입력하세요.'
             />
             <button onClick={handleSendMessage}>전송</button>
           </div>
