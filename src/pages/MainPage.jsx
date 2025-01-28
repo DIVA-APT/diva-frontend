@@ -30,7 +30,7 @@ const MainPage = () => {
   return (
     <div
       className='container text-white z-index-20'
-      style={{ margin: '80px auto 30px' }}
+      style={{ margin: '200px auto 30px' }}
     >
       <div className='row' style={{ justifyContent: 'center' }}>
         <div className='col-xl-10'>
