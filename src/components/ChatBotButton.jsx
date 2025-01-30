@@ -14,12 +14,13 @@ const ChatBotButton = () => {
 
   const handleSendMessage = async () => {
     if (!userInput.trim() || isLoading) return;
+    setUserInput('');
 
     setMessages((prev) => [...prev, { type: 'user', text: userInput }]);
     setIsLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/chat', {
+      const response = await axios.post('http://localhost:8080/chat', {
         message: userInput,
       });
       setIsLoading(false);
@@ -39,8 +40,6 @@ const ChatBotButton = () => {
         { type: 'bot', text: '에러가 발생했습니다.' },
       ]);
     }
-
-    setUserInput('');
   };
 
   const handleKeyDown = (event) => {
