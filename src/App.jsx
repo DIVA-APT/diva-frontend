@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Link, Outlet } from 'react-router';
 import logo1 from './assets/logo-1.webp';
 
 const App = () => {
@@ -17,7 +17,9 @@ const App = () => {
           className='col-sm-6'
           style={{ color: '#001F3F', marginLeft: '10px' }}
         >
-          DivA
+          <Link to={'/'} style={{ textDecoration: 'none', color: '#001F3F' }}>
+            DivA
+          </Link>
         </h1>
       </header>
       <Outlet />
