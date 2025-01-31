@@ -10,5 +10,4 @@ module.exports = {
   arrowParens: 'always', // 화살표 함수 인자가 하나일 경우 괄호 사용 (예: (x) => x)
   jsxBracketSameLine: false, // JSX에서 여러 줄의 속성을 사용할 때 마지막 속성 뒤에 항상 쉼표를 붙임
   endOfLine: 'lf', // 파일의 끝에 개행 추가
-  htmlWhitespaceSensitivity: 'css', // HTML 파일과 같은 내용에 대해 "auto"로 자동 포맷
 };

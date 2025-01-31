@@ -5,15 +5,17 @@ import './index.css';
 import App from './App';
 import MainPage from './pages/MainPage';
 import DetailPage from './pages/DetailPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
+      <Route index element={<MainPage />} />
       <Route path='/' element={<App />}>
-        <Route index element={<MainPage />} />
-        <Route path='/a' element={<DetailPage />} />
+        <Route path='/detail/:code' element={<DetailPage />} />
       </Route>
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
   </BrowserRouter>
 );
