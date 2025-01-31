@@ -49,10 +49,10 @@ jobs:
         with:
           script: |
             # EC2 서버에서 정적 파일을 호스팅하는 디렉토리를 생성(또는 이미 있다면 생략 가능)
-            mkdir -p ${ FILE_DIR }
+            mkdir -p ${FILE_DIR}
 
             # build 폴더에 있는 정적 파일 전부를 EC2의 /var/www/html 디렉토리로 복사
-            scp -o StrictHostKeyChecking=no -r build/* ${ SSH_USERNAME }@${ SSH_HOST }:${ FILE_DIR }
+            scp -o StrictHostKeyChecking=no -r build/* ${SSH_USERNAME}@${SSH_HOST}:${FILE_DIR}
 
             # Nginx 재시작
-            ssh -o StrictHostKeyChecking=no ${ SSH_USERNAME }@${ SSH_HOST } "sudo systemctl restart nginx"
+            ssh -o StrictHostKeyChecking=no ${SSH_USERNAME}@${SSH_HOST} "sudo systemctl restart nginx"
