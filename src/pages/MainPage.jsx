@@ -46,7 +46,7 @@ const MainPage = () => {
   return (
     <div
       className='text-white z-index-20'
-      style={{ padding: '300px 500px 30px', backgroundColor: '#EAD8B1' }}
+      style={{ padding: '15% 10% 30px', backgroundColor: '#EAD8B1' }}
     >
       <div className='row' style={{ justifyContent: 'center' }}>
         <div className='col-xl-10'>
