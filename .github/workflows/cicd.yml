@@ -54,6 +54,23 @@ jobs:
       - name: List downloaded artifact
         run: ls -alR build
 
+      - name: Debug appleboy/ssh-action environment
+        uses: appleboy/ssh-action@master
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        with:
+          script: |
+            echo "### Debugging Environment ###"
+            echo "Current working directory: $(pwd)"
+            echo "Home directory: $HOME"
+            echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+            echo "Listing current directory contents:"
+            ls -al
+            echo "Printing all environment variables:"
+            env
+
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@master
         env:
