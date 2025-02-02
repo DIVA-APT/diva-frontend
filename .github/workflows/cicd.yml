@@ -45,6 +45,12 @@ jobs:
           name: frontend-build
           path: build
 
+      - name: Print working directory
+        run: pwd
+
+      - name: List current directory contents
+        run: ls -al
+
       - name: List downloaded artifact
         run: ls -alR build
 
