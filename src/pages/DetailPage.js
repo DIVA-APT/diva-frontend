@@ -13,9 +13,11 @@ const DetailPage = () => {
 
   const { state } = useLocation();
 
+  // console.log('DetailPage - received state:', state);
+
   const fetchContent = async (endpoint) => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `http://localhost:8080/analysis/${endpoint}`,
         {
           params: { stockCode: state.stock_code },
@@ -30,7 +32,7 @@ const DetailPage = () => {
 
   const fetchReport = async () => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         'http://localhost:8080/analysis/report',
         {
           params: { stockCode: state.stock_code },
@@ -45,7 +47,7 @@ const DetailPage = () => {
 
   const fetchReferences = async () => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         'http://localhost:8080/analysis/source',
         {
           params: { stockCode: state.stock_code },
