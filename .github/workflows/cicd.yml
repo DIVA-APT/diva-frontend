@@ -18,6 +18,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Create .env.production file
+        run: |
+          echo "REACT_APP_APP_KEY=${{ secrets.REACT_APP_APP_KEY }}" > .env.production
+          echo "REACT_APP_APP_SECRET=${{ secrets.REACT_APP_APP_SECRET }}" > .env.production
+          echo "REACT_APP_BEARER_KEY=${{ secrets.REACT_APP_BEARER_KEY }}" >> .env.production
+          echo "REACT_APP_HOST=${{ secrets.REACT_APP_HOST }}" >> .env.production
+
       - name: Build React app
         run: npm run build
 
