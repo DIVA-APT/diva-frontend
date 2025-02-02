@@ -77,8 +77,14 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
           SSH_KEY: ${{ secrets.SSH_KEY }}
+          WORKDIR: /home/runner/work/diva-frontend/diva-frontend
         with:
           script: |
+
+            echo "WORKDIR is $WORKDIR"
+            cd $WORKDIR
+            echo "Now working directory: $(pwd)"
+
             # EC2 서버에서 정적 파일을 호스팅하는 디렉토리를 생성(또는 이미 있다면 생략 가능)
             mkdir -p /var/www/html
 
