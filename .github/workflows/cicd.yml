@@ -21,17 +21,11 @@ jobs:
       - name: Build React app
         run: npm run build
 
-      - name: List build directory contents
-        run: ls -al build
-
       - name: Upload frontend build artifact
         uses: actions/upload-artifact@v4
         with:
           name: frontend-build
           path: build
-
-      - name: Check directory
-        run: ls -R
 
   deploy-frontend:
     needs: build-frontend
@@ -45,45 +39,20 @@ jobs:
           name: frontend-build
           path: build
 
-      - name: Print working directory
-        run: pwd
-
-      - name: List current directory contents
-        run: ls -al
-
-      - name: List downloaded artifact
-        run: ls -alR build
-
-      - name: Debug appleboy/ssh-action environment
-        uses: appleboy/ssh-action@master
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
+      - name: Deploy to AWS EC2
+        uses: appleboy/scp-action@master
         with:
-          script: |
-            echo "### Debugging Environment ###"
-            echo "Current working directory: $(pwd)"
-            echo "Home directory: $HOME"
-            echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
-            echo "Listing current directory contents:"
-            ls -al
-            echo "Printing all environment variables:"
-            env
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          source: 'build/*'
+          target: '/var/www/html'
 
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@master
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
         with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
-            # EC2 서버에서 정적 파일을 호스팅하는 디렉토리를 생성(또는 이미 있다면 생략 가능)
-            mkdir -p /var/www/html
-
-            # build 폴더에 있는 정적 파일 전부를 EC2의 디렉토리로 복사
-            scp -o StrictHostKeyChecking=no -r build/ ${SSH_USERNAME}@${SSH_HOST}:/var/www/html
-
-            # Nginx 재시작
-            ssh -o StrictHostKeyChecking=no ${SSH_USERNAME}@${SSH_HOST} "sudo systemctl restart nginx"
+            sudo systemctl restart nginx
