@@ -18,10 +18,7 @@ const DetailPage = () => {
   const fetchContent = async (endpoint) => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/analysis/${endpoint}`,
-        {
-          params: { stockCode: state.stock_code },
-        }
+        `http://localhost:8080/analysis/${endpoint}/${state.stock_code}`
       );
       setContent(response.data.description || '데이터가 없습니다.');
     } catch (error) {
@@ -33,10 +30,7 @@ const DetailPage = () => {
   const fetchReport = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:8080/analysis/report',
-        {
-          params: { stockCode: state.stock_code },
-        }
+        `http://localhost:8080/analysis/report/${state.stock_code}`
       );
       setReport(response.data.description || '리포트 데이터가 없습니다.');
     } catch (error) {
@@ -48,10 +42,7 @@ const DetailPage = () => {
   const fetchReferences = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:8080/analysis/source',
-        {
-          params: { stockCode: state.stock_code },
-        }
+        `http://localhost:8080/analysis/source/${state.stock_code}`
       );
       setReferencesData(response.data.sources || []);
     } catch (error) {
