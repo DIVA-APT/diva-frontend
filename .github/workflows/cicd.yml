@@ -83,7 +83,7 @@ jobs:
             mkdir -p /var/www/html
 
             # build 폴더에 있는 정적 파일 전부를 EC2의 디렉토리로 복사
-            scp -o StrictHostKeyChecking=no -r /home/runner/work/diva-frontend/diva-frontend/build/* ${SSH_USERNAME}@${SSH_HOST}:/var/www/html
+            scp -o StrictHostKeyChecking=no -r /home/runner/work/diva-frontend/diva-frontend/build/ ${SSH_USERNAME}@${SSH_HOST}:/var/www/html
 
             # Nginx 재시작
             ssh -o StrictHostKeyChecking=no ${SSH_USERNAME}@${SSH_HOST} "sudo systemctl restart nginx"
