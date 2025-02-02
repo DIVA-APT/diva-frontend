@@ -24,7 +24,7 @@ const DetailPage = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:8080/analysis/${endpoint}/${state.stock_code}`
+        `http://${process.env.REACT_APP_HOST}:8080/analysis/${endpoint}/${state.stock_code}`
       );
       console.log('이거는 내용:', response.data.content);
       setContent(response.data.content || '데이터가 없습니다.');
@@ -39,7 +39,7 @@ const DetailPage = () => {
   const fetchReport = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/analysis/report/${state.stock_code}`
+        `http://${process.env.REACT_APP_HOST}:8080/analysis/report/${state.stock_code}`
       );
       setReport(response.data.content || '리포트 데이터가 없습니다.');
     } catch (error) {
@@ -51,7 +51,7 @@ const DetailPage = () => {
   const fetchReferences = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/analysis/source/${state.stock_code}`
+        `http://${process.env.REACT_APP_HOST}:8080/analysis/source/${state.stock_code}`
       );
       setReferencesData(response.data.sources || []);
     } catch (error) {
