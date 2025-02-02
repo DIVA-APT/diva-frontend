@@ -45,6 +45,9 @@ jobs:
           name: frontend-build
           path: build
 
+      - name: List downloaded artifact
+        run: ls -alR build
+
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@master
         env:
