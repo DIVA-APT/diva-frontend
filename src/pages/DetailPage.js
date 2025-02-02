@@ -3,6 +3,8 @@ import { useLocation } from 'react-router';
 import axios from 'axios';
 import ChatBotButton from '../components/ChatBotButton';
 import ReactMarkdown from 'react-markdown';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const DetailPage = () => {
   const [content, setContent] = useState('내용을 선택해 주세요.');
@@ -14,17 +16,23 @@ const DetailPage = () => {
 
   const { state } = useLocation();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   // console.log('DetailPage - received state:', state);
 
   const fetchContent = async (endpoint) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `http://localhost:8080/analysis/${endpoint}/${state.stock_code}`
       );
+      console.log('이거는 내용:', response.data.content);
       setContent(response.data.content || '데이터가 없습니다.');
     } catch (error) {
       console.error(error);
       setContent('데이터를 불러오는 데 실패했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -167,7 +175,11 @@ const DetailPage = () => {
             padding: '10px',
           }}
         >
-          <ReactMarkdown>{content}</ReactMarkdown>
+          {isLoading ? (
+            <Skeleton count={10} />
+          ) : (
+            <ReactMarkdown>{content}</ReactMarkdown>
+          )}
         </div>
       </div>
 
