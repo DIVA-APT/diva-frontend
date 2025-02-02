@@ -21,11 +21,17 @@ jobs:
       - name: Build React app
         run: npm run build
 
+      - name: List build directory contents
+        run: ls -al build
+
       - name: Upload frontend build artifact
         uses: actions/upload-artifact@v4
         with:
           name: frontend-build
           path: build
+
+      - name: Check directory
+        run: ls -R
 
   deploy-frontend:
     needs: build-frontend
