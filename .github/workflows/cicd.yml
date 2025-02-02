@@ -71,9 +71,6 @@ jobs:
             echo "Printing all environment variables:"
             env
 
-      - name: List current directory contents
-        run: cd diva-frontend
-
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@master
         env:
