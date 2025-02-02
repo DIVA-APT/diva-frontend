@@ -20,7 +20,7 @@ const DetailPage = () => {
       const response = await axios.post(
         `http://localhost:8080/analysis/${endpoint}/${state.stock_code}`
       );
-      setContent(response.data.description || '데이터가 없습니다.');
+      setContent(response.data.content || '데이터가 없습니다.');
     } catch (error) {
       console.error(error);
       setContent('데이터를 불러오는 데 실패했습니다.');
@@ -32,7 +32,7 @@ const DetailPage = () => {
       const response = await axios.post(
         `http://localhost:8080/analysis/report/${state.stock_code}`
       );
-      setReport(response.data.description || '리포트 데이터가 없습니다.');
+      setReport(response.data.content || '리포트 데이터가 없습니다.');
     } catch (error) {
       console.error(error);
       setReport('리포트 데이터를 불러오는 데 실패했습니다.');
