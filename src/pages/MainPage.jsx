@@ -8,6 +8,12 @@ const MainPage = () => {
   const [input, setInput] = useState('');
   const [hintList, setHintList] = useState([]);
 
+  const handleInputChange = (e) => {
+    e.preventDefault();
+    setInput(e.target.value);
+    updateHintList(e.target.value);
+  };
+
   const handleButtonClick = (e) => {
     e.preventDefault();
 
@@ -16,21 +22,31 @@ const MainPage = () => {
       return;
     }
 
+    updateHintList(input);
+  };
+
+  const updateHintList = (value) => {
+    const result = stockList.filter((e) =>
+      e.stock_name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    if (result.length === 0) {
+      return;
+    }
+
     setHintList(
-      stockList
-        .filter((e) => e.stock_name.toLowerCase().includes(input.toLowerCase()))
-        .sort((a, b) =>
-          a.stock_name
-            .toLowerCase()
-            .localeCompare(b.stock_name.toLowerCase(), 'ko')
-        )
+      result.sort((a, b) =>
+        a.stock_name
+          .toLowerCase()
+          .localeCompare(b.stock_name.toLowerCase(), 'ko')
+      )
     );
   };
 
   return (
     <div
       className='text-white z-index-20'
-      style={{ padding: '200px 150px', backgroundColor: '#EAD8B1' }}
+      style={{ padding: '15% 10% 30px', backgroundColor: '#EAD8B1' }}
     >
       <div className='row' style={{ justifyContent: 'center' }}>
         <div className='col-xl-10'>
@@ -61,7 +77,7 @@ const MainPage = () => {
                     type='text'
                     name='search'
                     placeholder='주식 종목 검색 (일부 입력 가능, 예: 삼성)'
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={handleInputChange}
                     value={input}
                   ></input>
                 </div>
