@@ -86,13 +86,9 @@ const DetailPage = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      fetchContent('financial');
-      fetchContent('expert-analysis');
-    }, 4000);
-    setTimeout(() => {
-      fetchContent('news');
-    }, 2000);
+    fetchContent('financial');
+    fetchContent('expert-analysis');
+    fetchContent('news');
   }, []);
 
   if (
