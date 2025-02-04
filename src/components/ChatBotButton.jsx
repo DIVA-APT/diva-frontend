@@ -20,9 +20,12 @@ const ChatBotButton = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:8080/chat', {
-        message: userInput,
-      });
+      const response = await axios.post(
+        `http://${process.env.REACT_APP_HOST}:8080/chat`,
+        {
+          message: userInput,
+        }
+      );
       setIsLoading(false);
       if (response.data && response.data.botMessage) {
         setMessages((prev) => [
