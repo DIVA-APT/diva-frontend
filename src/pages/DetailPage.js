@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 import ChatBotButton from '../components/ChatBotButton';
+import ReactMarkdown from 'react-markdown';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const DetailPage = () => {
   const [content, setContent] = useState('내용을 선택해 주세요.');
@@ -13,30 +16,34 @@ const DetailPage = () => {
 
   const { state } = useLocation();
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  // console.log('DetailPage - received state:', state);
+
   const fetchContent = async (endpoint) => {
+    setIsLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:8080/analysis/${endpoint}`,
-        {
-          params: { stockCode: state.stock_code },
-        }
+      axios.defaults.withCredentials = true;
+      const response = await axios.post(
+        `http://${process.env.REACT_APP_HOST}:8080/analysis/${endpoint}/${state.stock_code}`
       );
-      setContent(response.data.description || '데이터가 없습니다.');
+      console.log('이거는 내용:', response.data.content);
+      setContent(response.data.content || '데이터가 없습니다.');
     } catch (error) {
       console.error(error);
       setContent('데이터를 불러오는 데 실패했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchReport = async () => {
     try {
-      const response = await axios.get(
-        'http://localhost:8080/analysis/report',
-        {
-          params: { stockCode: state.stock_code },
-        }
+      axios.defaults.withCredentials = true;
+      const response = await axios.post(
+        `http://${process.env.REACT_APP_HOST}:8080/analysis/report/${state.stock_code}`
       );
-      setReport(response.data.description || '리포트 데이터가 없습니다.');
+      setReport(response.data.content || '리포트 데이터가 없습니다.');
     } catch (error) {
       console.error(error);
       setReport('리포트 데이터를 불러오는 데 실패했습니다.');
@@ -45,11 +52,9 @@ const DetailPage = () => {
 
   const fetchReferences = async () => {
     try {
-      const response = await axios.get(
-        'http://localhost:8080/analysis/source',
-        {
-          params: { stockCode: state.stock_code },
-        }
+      axios.defaults.withCredentials = true;
+      const response = await axios.post(
+        `http://${process.env.REACT_APP_HOST}:8080/analysis/source/${state.stock_code}`
       );
       setReferencesData(response.data.sources || []);
     } catch (error) {
@@ -173,7 +178,11 @@ const DetailPage = () => {
             padding: '10px',
           }}
         >
-          {content}
+          {isLoading ? (
+            <Skeleton count={10} />
+          ) : (
+            <ReactMarkdown>{content}</ReactMarkdown>
+          )}
         </div>
       </div>
 

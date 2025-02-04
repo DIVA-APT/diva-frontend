@@ -8,7 +8,10 @@ const StockHint = (props) => {
 
   const handleButtonClick = () => {
     naviation(`/detail/${props.data.stock_code}`, {
-      state: { stock_name: props.data.stock_name },
+      state: {
+        stock_code: props.data.stock_code,
+        stock_name: props.data.stock_name,
+      },
     });
   };
 
