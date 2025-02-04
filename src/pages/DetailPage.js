@@ -23,6 +23,7 @@ const DetailPage = () => {
   const fetchContent = async (endpoint) => {
     setIsLoading(true);
     try {
+      axios.defaults.withCredentials = true;
       const response = await axios.post(
         `http://localhost:8080/analysis/${endpoint}/${state.stock_code}`
       );
@@ -38,6 +39,7 @@ const DetailPage = () => {
 
   const fetchReport = async () => {
     try {
+      axios.defaults.withCredentials = true;
       const response = await axios.post(
         `http://localhost:8080/analysis/report/${state.stock_code}`
       );
@@ -50,6 +52,7 @@ const DetailPage = () => {
 
   const fetchReferences = async () => {
     try {
+      axios.defaults.withCredentials = true;
       const response = await axios.post(
         `http://localhost:8080/analysis/source/${state.stock_code}`
       );
