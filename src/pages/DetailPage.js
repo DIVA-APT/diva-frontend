@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 import ChatBotButton from '../components/ChatBotButton';
@@ -18,17 +18,38 @@ const DetailPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // console.log('DetailPage - received state:', state);
+  const [financial, setFinancial] = useState('');
+  const [expertAnalysis, setExpertAnalysis] = useState('');
+  const [news, setNews] = useState('');
+
+  console.log('DetailPage - received state:', state);
 
   const fetchContent = async (endpoint) => {
     setIsLoading(true);
     try {
       axios.defaults.withCredentials = true;
       const response = await axios.post(
+        // `http://${process.env.REACT_APP_HOST}:8080/analysis/${endpoint}/${state.stock_code}`
         `http://localhost:8080/analysis/${endpoint}/${state.stock_code}`
       );
+
       console.log('이거는 내용:', response.data.content);
-      setContent(response.data.content || '데이터가 없습니다.');
+
+      switch (endpoint) {
+        case 'financial':
+          setFinancial(response.data.content || '데이터가 없습니다.');
+          break;
+        case 'expert-analysis':
+          setExpertAnalysis(response.data.content || '데이터가 없습니다.');
+          break;
+        case 'news':
+          setNews(response.data.content || '데이터가 없습니다.');
+          break;
+        default:
+          console.log('잘못된 엔드포인트 입력입니다.');
+      }
+
+      // setContent(response.data.content || '데이터가 없습니다.');
     } catch (error) {
       console.error(error);
       setContent('데이터를 불러오는 데 실패했습니다.');
@@ -41,6 +62,7 @@ const DetailPage = () => {
     try {
       axios.defaults.withCredentials = true;
       const response = await axios.post(
+        // `http://${process.env.REACT_APP_HOST}:8080/analysis/report/${state.stock_code}`
         `http://localhost:8080/analysis/report/${state.stock_code}`
       );
       setReport(response.data.content || '리포트 데이터가 없습니다.');
@@ -54,6 +76,7 @@ const DetailPage = () => {
     try {
       axios.defaults.withCredentials = true;
       const response = await axios.post(
+        // `http://${process.env.REACT_APP_HOST}:8080/analysis/source/${state.stock_code}`
         `http://localhost:8080/analysis/source/${state.stock_code}`
       );
       setReferencesData(response.data.sources || []);
@@ -62,6 +85,12 @@ const DetailPage = () => {
       setReferencesData([]);
     }
   };
+
+  useEffect(() => {
+    fetchContent('financial');
+    fetchContent('expert-analysis');
+    fetchContent('news');
+  }, []);
 
   return (
     <div>
@@ -95,14 +124,14 @@ const DetailPage = () => {
           }`}
           style={{ margin: '0 10px' }}
           onClick={() => {
-            fetchContent('financial');
+            setContent(financial);
             setActiveTopTab('financial');
           }}
         >
           재무 제표
         </button>
 
-        <button
+        {/* <button
           className={`btn ${
             activeTopTab === 'macroeconomics'
               ? 'btn-primary'
@@ -115,9 +144,9 @@ const DetailPage = () => {
           }}
         >
           거시 경제 및 정책
-        </button>
+        </button> */}
 
-        <button
+        {/* <button
           className={`btn ${
             activeTopTab === 'investment-movement'
               ? 'btn-primary'
@@ -130,7 +159,7 @@ const DetailPage = () => {
           }}
         >
           시장 심리 및 투자 동향
-        </button>
+        </button> */}
 
         <button
           className={`btn ${
@@ -140,7 +169,7 @@ const DetailPage = () => {
           }`}
           style={{ margin: '0 10px' }}
           onClick={() => {
-            fetchContent('expert-analysis');
+            setContent(expertAnalysis);
             setActiveTopTab('expert-analysis');
           }}
         >
@@ -153,7 +182,7 @@ const DetailPage = () => {
           }`}
           style={{ margin: '0 10px' }}
           onClick={() => {
-            fetchContent('news');
+            setContent(news);
             setActiveTopTab('news');
           }}
         >
