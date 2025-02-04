@@ -1,39 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 import ChatBotButton from '../components/ChatBotButton';
 import ReactMarkdown from 'react-markdown';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import FullScreenLoader from '../components/FullScreenLoader';
 
 const DetailPage = () => {
-  const [content, setContent] = useState('내용을 선택해 주세요.');
+  const [content, setContent] = useState({
+    financial: null,
+    'expert-analysis': null,
+    news: null,
+  });
   const [showVisualization, setShowVisualization] = useState(false);
   const [showReferences, setShowReferences] = useState(false);
   const [report, setReport] = useState('');
   const [referencesData, setReferencesData] = useState([]);
-  const [activeTopTab, setActiveTopTab] = useState(null);
+  const [activeTopTab, setActiveTopTab] = useState('financial');
+  const [loadedCount, setLoadedCount] = useState(0);
 
   const { state } = useLocation();
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  // console.log('DetailPage - received state:', state);
+  const [isLoading, setIsLoading] = useState({
+    financial: true,
+    'expert-analysis': true,
+    news: true,
+  });
 
   const fetchContent = async (endpoint) => {
-    setIsLoading(true);
     try {
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         `http://${process.env.REACT_APP_HOST}:8080/analysis/${endpoint}/${state.stock_code}`
       );
       console.log('이거는 내용:', response.data.content);
-      setContent(response.data.content || '데이터가 없습니다.');
+      setContent((prevState) => ({
+        ...prevState,
+        [endpoint]: response.data.content || '데이터가 없습니다',
+      }));
     } catch (error) {
       console.error(error);
-      setContent('데이터를 불러오는 데 실패했습니다.');
+      setContent((prevState) => ({
+        ...prevState,
+        [endpoint]: `${endpoint} 데이터를 불러오는데 실패하였습니다`,
+      }));
     } finally {
-      setIsLoading(false);
+      setIsLoading((prevState) => ({
+        ...prevState,
+        [endpoint]: false,
+      }));
+      setLoadedCount((prev) => {
+        if (prev === 0) {
+          setActiveTopTab(endpoint);
+        }
+        return prev + 1;
+      });
     }
   };
 
@@ -62,6 +84,23 @@ const DetailPage = () => {
       setReferencesData([]);
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      fetchContent('financial');
+      fetchContent('expert-analysis');
+    }, 4000);
+    setTimeout(() => {
+      fetchContent('news');
+    }, 2000);
+  }, []);
+
+  if (
+    isLoading['financial'] &&
+    isLoading['expert-analysis'] &&
+    isLoading['news']
+  )
+    return <FullScreenLoader />;
 
   return (
     <div>
@@ -95,43 +134,12 @@ const DetailPage = () => {
           }`}
           style={{ margin: '0 10px' }}
           onClick={() => {
-            fetchContent('financial');
+            // fetchContent('financial');
             setActiveTopTab('financial');
           }}
         >
-          재무 제표
+          {isLoading['financial'] ? '로딩 중..' : '재무제표'}
         </button>
-
-        <button
-          className={`btn ${
-            activeTopTab === 'macroeconomics'
-              ? 'btn-primary'
-              : 'btn-outline-primary'
-          }`}
-          style={{ margin: '0 10px' }}
-          onClick={() => {
-            fetchContent('macroeconomics');
-            setActiveTopTab('macroeconomics');
-          }}
-        >
-          거시 경제 및 정책
-        </button>
-
-        <button
-          className={`btn ${
-            activeTopTab === 'investment-movement'
-              ? 'btn-primary'
-              : 'btn-outline-primary'
-          }`}
-          style={{ margin: '0 10px' }}
-          onClick={() => {
-            fetchContent('investment-movement');
-            setActiveTopTab('investment-movement');
-          }}
-        >
-          시장 심리 및 투자 동향
-        </button>
-
         <button
           className={`btn ${
             activeTopTab === 'expert-analysis'
@@ -140,11 +148,11 @@ const DetailPage = () => {
           }`}
           style={{ margin: '0 10px' }}
           onClick={() => {
-            fetchContent('expert-analysis');
+            // fetchContent('expert-analysis');
             setActiveTopTab('expert-analysis');
           }}
         >
-          전문가 분석
+          {isLoading['expert-analysis'] ? '로딩 중..' : '전문가 분석'}
         </button>
 
         <button
@@ -153,11 +161,11 @@ const DetailPage = () => {
           }`}
           style={{ margin: '0 10px' }}
           onClick={() => {
-            fetchContent('news');
+            // fetchContent('news');
             setActiveTopTab('news');
           }}
         >
-          뉴스
+          {isLoading['news'] ? '로딩 중..' : '뉴스'}
         </button>
       </div>
 
@@ -178,10 +186,10 @@ const DetailPage = () => {
             padding: '10px',
           }}
         >
-          {isLoading ? (
+          {isLoading[activeTopTab] ? (
             <Skeleton count={10} />
           ) : (
-            <ReactMarkdown>{content}</ReactMarkdown>
+            <ReactMarkdown>{content[activeTopTab]}</ReactMarkdown>
           )}
         </div>
       </div>
@@ -196,7 +204,7 @@ const DetailPage = () => {
             paddingTop: '30px',
           }}
         >
-          <li className='nav-item'>
+          {/* <li className='nav-item'>
             <button
               className='nav-link btn'
               onClick={async () => {
@@ -220,7 +228,7 @@ const DetailPage = () => {
             >
               시각화 데이터
             </button>
-          </li>
+          </li> */}
           <li className='nav-item'>
             <button
               className='nav-link btn'
