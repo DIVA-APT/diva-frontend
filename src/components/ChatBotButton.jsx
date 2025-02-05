@@ -52,7 +52,7 @@ const ChatBotButton = () => {
   };
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <button className='chatbot-button' onClick={toggleChatbot}>
         <span role='img' aria-label='chat'>
           💬

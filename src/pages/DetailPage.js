@@ -1,39 +1,64 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 import ChatBotButton from '../components/ChatBotButton';
 import ReactMarkdown from 'react-markdown';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import FullScreenLoader from '../components/FullScreenLoader';
+import './DetailPage.css';
+import { Loader2 } from 'lucide-react';
+import remarkGfm from 'remark-gfm';
 
 const DetailPage = () => {
-  const [content, setContent] = useState('내용을 선택해 주세요.');
+  const [content, setContent] = useState({
+    financial: 'null',
+    'expert-analysis': null,
+    news: null,
+  });
   const [showVisualization, setShowVisualization] = useState(false);
   const [showReferences, setShowReferences] = useState(false);
   const [report, setReport] = useState('');
   const [referencesData, setReferencesData] = useState([]);
-  const [activeTopTab, setActiveTopTab] = useState(null);
+  const [activeTopTab, setActiveTopTab] = useState('financial');
+  const [loadedCount, setLoadedCount] = useState(0);
 
   const { state } = useLocation();
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  // console.log('DetailPage - received state:', state);
+  const [isLoading, setIsLoading] = useState({
+    financial: true,
+    'expert-analysis': true,
+    news: true,
+  });
 
   const fetchContent = async (endpoint) => {
-    setIsLoading(true);
     try {
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         `http://${process.env.REACT_APP_HOST}:8080/analysis/${endpoint}/${state.stock_code}`
       );
       console.log('이거는 내용:', response.data.content);
-      setContent(response.data.content || '데이터가 없습니다.');
+      setContent((prevState) => ({
+        ...prevState,
+        [endpoint]: response.data.content || '데이터가 없습니다',
+      }));
     } catch (error) {
       console.error(error);
-      setContent('데이터를 불러오는 데 실패했습니다.');
+      setContent((prevState) => ({
+        ...prevState,
+        [endpoint]: `${endpoint} 데이터를 불러오는데 실패하였습니다`,
+      }));
     } finally {
-      setIsLoading(false);
+      setIsLoading((prevState) => ({
+        ...prevState,
+        [endpoint]: false,
+      }));
+      setLoadedCount((prev) => {
+        if (prev === 0) {
+          setActiveTopTab(endpoint);
+        }
+        return prev + 1;
+      });
     }
   };
 
@@ -63,140 +88,173 @@ const DetailPage = () => {
     }
   };
 
+  useEffect(() => {
+    fetchContent('financial');
+    fetchContent('expert-analysis');
+    fetchContent('news');
+  }, []);
+
+  if (
+    isLoading['financial'] &&
+    isLoading['expert-analysis'] &&
+    isLoading['news']
+  )
+    return <FullScreenLoader />;
+
   return (
     <div>
       <div
-        className='col-md-8'
         style={{
-          background: 'center center',
-          backgroundColor: '#EAD8B1',
-          width: '100%',
-          textAlign: 'center',
-          padding: '20px 0',
+          display: 'flex',
+          justifyContent: 'center',
+          height: '50px',
+          backgroundColor: 'var(--color-2)',
+          // marginBottom: '20px',
+          // paddingTop: '30px',
         }}
       >
-        <h2 className='mb-md-0'>{state.stock_name}</h2>
-        <p className='subtitle text-secondary'>
-          Current Price: 50,000 | Change: +1.23%
-        </p>
+        <button
+          className={'btn'}
+          style={{
+            width: '30%',
+            fontSize: '1rem',
+            color: activeTopTab === 'financial' ? 'white' : 'black',
+          }}
+          onClick={() => {
+            setActiveTopTab('financial');
+          }}
+        >
+          재무제표
+          {isLoading['financial'] ? (
+            <>
+              ..
+              <Loader2 className='spin' />
+            </>
+          ) : (
+            ''
+          )}
+        </button>
+        <button
+          className={'btn'}
+          style={{
+            width: '30%',
+            fontSize: '1rem',
+            color: activeTopTab === 'expert-analysis' ? 'white' : 'black',
+          }}
+          onClick={() => {
+            setActiveTopTab('expert-analysis');
+          }}
+        >
+          전문가분석
+          {isLoading['expert-analysis'] ? (
+            <>
+              ..
+              <Loader2 className='spin' />
+            </>
+          ) : (
+            ''
+          )}
+        </button>
+        <button
+          className={'btn'}
+          style={{
+            width: '30%',
+            fontSize: '1rem',
+            color: activeTopTab === 'news' ? 'white' : 'black',
+          }}
+          onClick={() => {
+            // fetchContent('news');
+            setActiveTopTab('news');
+          }}
+        >
+          뉴스
+          {isLoading['news'] ? (
+            <>
+              ..
+              <Loader2 className='spin' />
+            </>
+          ) : (
+            ''
+          )}
+        </button>
+        <button
+          className={'btn'}
+          style={{ width: '30%', fontSize: '1rem' }}
+          onClick={() => {
+            // setActiveTopTab('news');
+          }}
+        >
+          종합 보고서
+        </button>
       </div>
+      <h2
+        className='mb-md-0'
+        style={{
+          color: 'white',
+          textAlign: 'center',
+          margin: '30px 0',
+          fontSize: '2rem',
+        }}
+      >
+        {state.stock_name}
+      </h2>
 
       <div
         style={{
           display: 'flex',
           justifyContent: 'center',
-          marginBottom: '20px',
-          paddingTop: '30px',
-        }}
-      >
-        <button
-          className={`btn ${
-            activeTopTab === 'financial' ? 'btn-primary' : 'btn-outline-primary'
-          }`}
-          style={{ margin: '0 10px' }}
-          onClick={() => {
-            fetchContent('financial');
-            setActiveTopTab('financial');
-          }}
-        >
-          재무 제표
-        </button>
-
-        <button
-          className={`btn ${
-            activeTopTab === 'macroeconomics'
-              ? 'btn-primary'
-              : 'btn-outline-primary'
-          }`}
-          style={{ margin: '0 10px' }}
-          onClick={() => {
-            fetchContent('macroeconomics');
-            setActiveTopTab('macroeconomics');
-          }}
-        >
-          거시 경제 및 정책
-        </button>
-
-        <button
-          className={`btn ${
-            activeTopTab === 'investment-movement'
-              ? 'btn-primary'
-              : 'btn-outline-primary'
-          }`}
-          style={{ margin: '0 10px' }}
-          onClick={() => {
-            fetchContent('investment-movement');
-            setActiveTopTab('investment-movement');
-          }}
-        >
-          시장 심리 및 투자 동향
-        </button>
-
-        <button
-          className={`btn ${
-            activeTopTab === 'expert-analysis'
-              ? 'btn-primary'
-              : 'btn-outline-primary'
-          }`}
-          style={{ margin: '0 10px' }}
-          onClick={() => {
-            fetchContent('expert-analysis');
-            setActiveTopTab('expert-analysis');
-          }}
-        >
-          전문가 분석
-        </button>
-
-        <button
-          className={`btn ${
-            activeTopTab === 'news' ? 'btn-primary' : 'btn-outline-primary'
-          }`}
-          style={{ margin: '0 10px' }}
-          onClick={() => {
-            fetchContent('news');
-            setActiveTopTab('news');
-          }}
-        >
-          뉴스
-        </button>
-      </div>
-
-      <div
-        style={{
-          padding: '20px',
-          maxWidth: '800px',
-          margin: 'auto',
-          border: '1px solid #ccc',
-          boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
+          flexDirection: 'column',
+          width: '100%',
+          margin: '20px 0',
         }}
       >
         <div
           style={{
+            // display: 'flex',
+            // justifyContent: 'center',
             width: '100%',
-            minHeight: '150px',
-            border: 'none',
-            padding: '10px',
+            maxHeight: '80dvh',
+            overflowY: 'auto',
           }}
         >
-          {isLoading ? (
-            <Skeleton count={10} />
-          ) : (
-            <ReactMarkdown>{content}</ReactMarkdown>
-          )}
-        </div>
-      </div>
-
-      <div>
-        <ul
-          className='nav nav-pills-custom'
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginBottom: '20px',
-            paddingTop: '30px',
-          }}
-        >
-          <li className='nav-item'>
+          <div
+            style={{
+              width: '60vw',
+              border: '1px solid #ccc',
+              boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
+              padding: '20px',
+              borderRadius: '1rem',
+              margin: '0 auto',
+            }}
+          >
+            <div
+              style={{
+                width: '100%',
+                minHeight: '150px',
+                border: 'none',
+                backgroundColor: 'white',
+                padding: '15px',
+              }}
+            >
+              {isLoading[activeTopTab] ? (
+                <Skeleton count={10} />
+              ) : (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {content[activeTopTab]}
+                </ReactMarkdown>
+              )}
+            </div>
+          </div>
+          <ul
+            className='nav nav-pills-custom'
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '20px',
+              paddingTop: '30px',
+            }}
+          >
+            {/* <li className='nav-item'>
             <button
               className='nav-link btn'
               onClick={async () => {
@@ -220,25 +278,29 @@ const DetailPage = () => {
             >
               시각화 데이터
             </button>
-          </li>
-          <li className='nav-item'>
-            <button
-              className='nav-link btn'
-              onClick={async () => {
-                setShowReferences(!showReferences);
-                setShowVisualization(false);
-                // 종합 리포트 숨김
-                setReport('');
-                if (!showReferences) {
-                  await fetchReferences();
-                }
-              }}
-            >
-              참고 자료 및 출처
-            </button>
-          </li>
-        </ul>
+          </li> */}
+            <li className='nav-item'>
+              <button
+                className='nav-link btn'
+                onClick={async () => {
+                  setShowReferences(!showReferences);
+                  setShowVisualization(false);
+                  // 종합 리포트 숨김
+                  setReport('');
+                  if (!showReferences) {
+                    await fetchReferences();
+                  }
+                }}
+              >
+                참고 자료 및 출처
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <ChatBotButton />
 
+      <div>
         {!showVisualization && !showReferences && report && (
           <div style={{ maxWidth: '800px', margin: '20px auto' }}>
             <div
@@ -315,7 +377,6 @@ const DetailPage = () => {
           </div>
         )}
       </div>
-      <ChatBotButton />
     </div>
   );
 };

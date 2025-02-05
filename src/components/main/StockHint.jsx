@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router';
+import SelectModal from '../SelectModal';
 
 const StockHint = (props) => {
   const naviation = useNavigate();
@@ -31,19 +32,21 @@ const StockHint = (props) => {
     >
       <strong
         className='d-inline-block'
-        style={{ width: '30%', fontSize: '1.5rem', color: 'var(--color-2)' }}
+        style={{ width: '30%', fontSize: '1rem', color: 'var(--color-2)' }}
       >
         {props.data.stock_name}
       </strong>
-      <p className='text-muted m-0' style={{ fontWeight: '600' }}>
+      <p
+        className='text-muted m-0'
+        style={{ fontWeight: '600', fontSize: '1rem' }}
+      >
         KOSPI
       </p>
-      <button className='p-0 btn btn-link' onClick={handleButtonClick}>
-        <FontAwesomeIcon
-          icon={faCircleArrowRight}
-          style={{ fontSize: '1.8rem' }}
-        />
-      </button>
+      <SelectModal
+        stockName={props.data.stock_name}
+        data={props.data}
+        close={props.close}
+      />
     </div>
   );
 };
