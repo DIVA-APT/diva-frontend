@@ -8,6 +8,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import FullScreenLoader from '../components/FullScreenLoader';
 import './DetailPage.css';
 import { Loader2 } from 'lucide-react';
+import remarkGfm from 'remark-gfm';
 
 const DetailPage = () => {
   const [content, setContent] = useState({
@@ -238,7 +239,9 @@ const DetailPage = () => {
               {isLoading[activeTopTab] ? (
                 <Skeleton count={10} />
               ) : (
-                <ReactMarkdown>{content[activeTopTab]}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {content[activeTopTab]}
+                </ReactMarkdown>
               )}
             </div>
           </div>

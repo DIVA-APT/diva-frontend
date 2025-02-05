@@ -73,7 +73,7 @@ const SelectModal = (props) => {
       >
         <FontAwesomeIcon
           icon={faCircleArrowRight}
-          style={{ fontSize: '1.8rem' }}
+          style={{ fontSize: '1.3rem' }}
         />
       </button>
       <Modal

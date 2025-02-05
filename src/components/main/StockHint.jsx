@@ -32,11 +32,14 @@ const StockHint = (props) => {
     >
       <strong
         className='d-inline-block'
-        style={{ width: '30%', fontSize: '1.5rem', color: 'var(--color-2)' }}
+        style={{ width: '30%', fontSize: '1rem', color: 'var(--color-2)' }}
       >
         {props.data.stock_name}
       </strong>
-      <p className='text-muted m-0' style={{ fontWeight: '600' }}>
+      <p
+        className='text-muted m-0'
+        style={{ fontWeight: '600', fontSize: '1rem' }}
+      >
         KOSPI
       </p>
       <SelectModal
