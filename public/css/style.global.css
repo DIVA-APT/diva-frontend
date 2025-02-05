@@ -56,7 +56,7 @@
   --bs-font-sans-serif: "Poppins", sans-serif;
   --bs-font-monospace: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
-  --bs-body-font-family: Poppins, sans-serif;
+  /* --bs-body-font-family: Poppins, sans-serif; */
   --bs-body-font-size:1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.6;
@@ -98,7 +98,7 @@
 
 body {
   margin: 0;
-  font-family: var(--bs-body-font-family);
+  /* font-family: var(--bs-body-font-family); */
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);
@@ -120,7 +120,7 @@ hr {
 h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   margin-top: 0;
   margin-bottom: 0.5rem;
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   font-weight: 700;
   line-height: 1.3;
 }
@@ -268,7 +268,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: var(--bs-font-monospace);
+  /* font-family: var(--bs-font-monospace); */
   font-size: 1em;
 }
 
@@ -361,7 +361,7 @@ select,
 optgroup,
 textarea {
   margin: 0;
-  font-family: inherit;
+  /* font-family: inherit; */
   font-size: inherit;
   line-height: inherit;
 }
@@ -3154,7 +3154,7 @@ textarea.form-control-lg {
 .btn {
   --bs-btn-padding-x: 0.75rem;
   --bs-btn-padding-y: 0.525rem;
-  --bs-btn-font-family: ;
+  /* --bs-btn-font-family: ; */
   --bs-btn-font-size:0.8rem;
   --bs-btn-font-weight: 400;
   --bs-btn-line-height: 1.6;
@@ -3169,7 +3169,7 @@ textarea.form-control-lg {
   --bs-btn-focus-box-shadow: 0 0 0 0.25rem rgba(var(--bs-btn-focus-shadow-rgb), .5);
   display: inline-block;
   padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
-  font-family: var(--bs-btn-font-family);
+  /* font-family: var(--bs-btn-font-family); */
   font-size: var(--bs-btn-font-size);
   font-weight: var(--bs-btn-font-weight);
   line-height: var(--bs-btn-line-height);
@@ -5940,7 +5940,7 @@ textarea.form-control-lg {
   display: block;
   padding: var(--bs-tooltip-arrow-height);
   margin: var(--bs-tooltip-margin);
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   font-style: normal;
   font-weight: 400;
   line-height: 1.6;
@@ -6050,7 +6050,7 @@ textarea.form-control-lg {
   z-index: var(--bs-popover-zindex);
   display: block;
   max-width: var(--bs-popover-max-width);
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   font-style: normal;
   font-weight: 400;
   line-height: 1.6;
@@ -8664,7 +8664,7 @@ textarea.form-control-lg {
 }
 
 .font-monospace {
-  font-family: var(--bs-font-monospace) !important;
+  /* font-family: var(--bs-font-monospace) !important; */
 }
 
 .fs-1 {
@@ -15608,7 +15608,7 @@ textarea.form-control-lg {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   font-size: 0.8rem;
   line-height: 1.5;
 }
@@ -15667,7 +15667,7 @@ textarea.form-control-lg {
   border: 1px solid #fff;
   border-radius: 3px;
   background-color: #fff;
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   font-weight: bold;
 }
 .map-custom-tooltip.active {
@@ -15873,7 +15873,7 @@ textarea.form-control-lg {
   left: -11px;
   z-index: 999;
   display: inline-block;
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.3em;
@@ -17476,7 +17476,7 @@ button.mfp-close {
 }
 
 .text-serif {
-  font-family: "Playfair Display", serif !important;
+  /* font-family: "Playfair Display", serif !important; */
 }
 
 .text-shadow {
@@ -17794,7 +17794,7 @@ button.mfp-close {
 }
 
 img.bg-image {
-  font-family: "object-fit: cover;";
+  /* font-family: "object-fit: cover;"; */
   -o-object-fit: cover;
   object-fit: cover;
 }

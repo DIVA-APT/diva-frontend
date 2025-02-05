@@ -1,14 +1,35 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--color-1);
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/NanumSquareL.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-code {
+/* 모든 요소에서 스크롤바 숨기기 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  margin: 0;
+  font-family: 'CustomFont';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: url('https://cdn.prod.website-files.com/64211cb2eca130241f2f1acb/655d9cb10d7db529318c9090_Data%20%26%20AI.webp')
+    no-repeat;
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE, Edge */
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE, Edge */
+}
+
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body {
+} */

@@ -11,7 +11,7 @@ import { Loader2 } from 'lucide-react';
 
 const DetailPage = () => {
   const [content, setContent] = useState({
-    financial: null,
+    financial: 'null',
     'expert-analysis': null,
     news: null,
   });
@@ -103,22 +103,6 @@ const DetailPage = () => {
   return (
     <div>
       <div
-        className='col-md-8'
-        style={{
-          background: 'center center',
-          backgroundColor: '#EAD8B1',
-          width: '100%',
-          textAlign: 'center',
-          padding: '20px 0',
-        }}
-      >
-        <h2 className='mb-md-0'>{state.stock_name}</h2>
-        <p className='subtitle text-secondary'>
-          Current Price: 50,000 | Change: +1.23%
-        </p>
-      </div>
-
-      <div
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -132,7 +116,7 @@ const DetailPage = () => {
           className={'btn'}
           style={{
             width: '30%',
-            fontSize: '2rem',
+            fontSize: '1.5rem',
             color: activeTopTab === 'financial' ? 'white' : 'black',
           }}
           onClick={() => {
@@ -153,7 +137,7 @@ const DetailPage = () => {
           className={'btn'}
           style={{
             width: '30%',
-            fontSize: '2rem',
+            fontSize: '1.5rem',
             color: activeTopTab === 'expert-analysis' ? 'white' : 'black',
           }}
           onClick={() => {
@@ -174,7 +158,7 @@ const DetailPage = () => {
           className={'btn'}
           style={{
             width: '30%',
-            fontSize: '2rem',
+            fontSize: '1.5rem',
             color: activeTopTab === 'news' ? 'white' : 'black',
           }}
           onClick={() => {
@@ -194,7 +178,7 @@ const DetailPage = () => {
         </button>
         <button
           className={'btn'}
-          style={{ width: '30%', fontSize: '2rem' }}
+          style={{ width: '30%', fontSize: '1.5rem' }}
           onClick={() => {
             // setActiveTopTab('news');
           }}
@@ -202,45 +186,72 @@ const DetailPage = () => {
           종합 보고서
         </button>
       </div>
+      <h2
+        className='mb-md-0'
+        style={{
+          color: 'white',
+          textAlign: 'center',
+          margin: '30px 0',
+          fontSize: '3rem',
+        }}
+      >
+        {state.stock_name}
+      </h2>
 
       <div
         style={{
-          padding: '20px',
-          maxWidth: '900px',
-          margin: '60px auto 0',
-          border: '1px solid #ccc',
-          boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
-          borderRadius: '1rem',
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          width: '100%',
+          margin: '20px 0',
         }}
       >
         <div
           style={{
+            // display: 'flex',
+            // justifyContent: 'center',
             width: '100%',
-            minHeight: '150px',
-            border: 'none',
-            padding: '10px',
-            backgroundColor: 'white',
+            maxHeight: '80dvh',
+            overflowY: 'auto',
           }}
         >
-          {isLoading[activeTopTab] ? (
-            <Skeleton count={10} />
-          ) : (
-            <ReactMarkdown>{content[activeTopTab]}</ReactMarkdown>
-          )}
-        </div>
-      </div>
-
-      <div>
-        <ul
-          className='nav nav-pills-custom'
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginBottom: '20px',
-            paddingTop: '30px',
-          }}
-        >
-          {/* <li className='nav-item'>
+          <div
+            style={{
+              width: '60vw',
+              border: '1px solid #ccc',
+              boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
+              padding: '20px',
+              borderRadius: '1rem',
+              margin: '0 auto',
+            }}
+          >
+            <div
+              style={{
+                width: '100%',
+                minHeight: '150px',
+                border: 'none',
+                backgroundColor: 'white',
+                padding: '15px',
+              }}
+            >
+              {isLoading[activeTopTab] ? (
+                <Skeleton count={10} />
+              ) : (
+                <ReactMarkdown>{content[activeTopTab]}</ReactMarkdown>
+              )}
+            </div>
+          </div>
+          <ul
+            className='nav nav-pills-custom'
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '20px',
+              paddingTop: '30px',
+            }}
+          >
+            {/* <li className='nav-item'>
             <button
               className='nav-link btn'
               onClick={async () => {
@@ -265,24 +276,28 @@ const DetailPage = () => {
               시각화 데이터
             </button>
           </li> */}
-          <li className='nav-item'>
-            <button
-              className='nav-link btn'
-              onClick={async () => {
-                setShowReferences(!showReferences);
-                setShowVisualization(false);
-                // 종합 리포트 숨김
-                setReport('');
-                if (!showReferences) {
-                  await fetchReferences();
-                }
-              }}
-            >
-              참고 자료 및 출처
-            </button>
-          </li>
-        </ul>
+            <li className='nav-item'>
+              <button
+                className='nav-link btn'
+                onClick={async () => {
+                  setShowReferences(!showReferences);
+                  setShowVisualization(false);
+                  // 종합 리포트 숨김
+                  setReport('');
+                  if (!showReferences) {
+                    await fetchReferences();
+                  }
+                }}
+              >
+                참고 자료 및 출처
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <ChatBotButton />
 
+      <div>
         {!showVisualization && !showReferences && report && (
           <div style={{ maxWidth: '800px', margin: '20px auto' }}>
             <div
@@ -359,7 +374,6 @@ const DetailPage = () => {
           </div>
         )}
       </div>
-      <ChatBotButton />
     </div>
   );
 };

@@ -3,9 +3,6 @@
   position: relative;
   width: 100%;
   height: 140vh; /* 스크롤 가능하도록 충분한 높이 */
-  /* background: #490c72; */
-  background: url('https://cdn.imweb.me/thumbnail/20241020/082e83db52796.gif')
-    no-repeat;
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -13,7 +10,7 @@
   justify-content: center;
   text-align: center;
   color: white;
-  font-family: 'Arial', sans-serif;
+  /* font-family: 'Arial', sans-serif; */
 }
 
 /* 배경 GIF */

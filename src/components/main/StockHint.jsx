@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router';
+import SelectModal from '../SelectModal';
 
 const StockHint = (props) => {
   const naviation = useNavigate();
@@ -38,12 +39,11 @@ const StockHint = (props) => {
       <p className='text-muted m-0' style={{ fontWeight: '600' }}>
         KOSPI
       </p>
-      <button className='p-0 btn btn-link' onClick={handleButtonClick}>
-        <FontAwesomeIcon
-          icon={faCircleArrowRight}
-          style={{ fontSize: '1.8rem' }}
-        />
-      </button>
+      <SelectModal
+        stockName={props.data.stock_name}
+        data={props.data}
+        close={props.close}
+      />
     </div>
   );
 };

@@ -17,9 +17,10 @@
 .chatbot-window {
   position: fixed;
   right: 20px;
-  bottom: 80px;
+  /* top: 250px; */
+  bottom: 0px;
   width: 300px;
-  height: 400px;
+  height: 70dvh;
   background-color: #fff;
   z-index: 9999;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
