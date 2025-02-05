@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import TextareaAutosize from 'react-textarea-autosize';
 import './ChatBotButton.css';
+import logo1 from '../assets/logo-1.webp';
 
 const ChatBotButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,9 +24,7 @@ const ChatBotButton = () => {
     try {
       const response = await axios.post(
         `http://${process.env.REACT_APP_HOST}:8080/chat`,
-        {
-          message: userInput,
-        }
+        { message: userInput }
       );
       setIsLoading(false);
       if (response.data && response.data.botMessage) {
@@ -46,43 +46,64 @@ const ChatBotButton = () => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
       handleSendMessage();
     }
   };
 
   return (
     <div style={{ position: 'relative' }}>
+      {/* 플로팅 버튼: 챗봇 열기/닫기 */}
       <button className='chatbot-button' onClick={toggleChatbot}>
-        <span role='img' aria-label='chat'>
-          💬
-        </span>
+        {isOpen ? 'X' : '💬'}
       </button>
 
       {isOpen && (
         <div className='chatbot-window'>
           <div className='chatbot-header'>
-            <h5>챗봇</h5>
-            <button onClick={toggleChatbot}>X</button>
+            <div className='chatbot-header-left'>
+              <img src={logo1} alt='Service Logo' className='service-logo' />
+              <h5>DivA Chat</h5>
+            </div>
           </div>
           <div className='chatbot-body'>
             {messages.map((msg, idx) => (
               <div
                 key={idx}
-                className={`message ${msg.type === 'user' ? 'user' : 'bot'}`}
+                className={`message-container ${
+                  msg.type === 'user' ? 'user' : 'bot'
+                }`}
               >
-                {msg.text}
+                {msg.type === 'bot' && (
+                  <img
+                    src={logo1}
+                    alt='Service Logo'
+                    className='service-logo'
+                  />
+                )}
+                <div className='message'>{msg.text}</div>
               </div>
             ))}
-            {isLoading && <div className='loading'>잠시만 기다려주세요...</div>}{' '}
+            {isLoading && <div className='loading'>잠시만 기다려주세요...</div>}
           </div>
           <div className='chatbot-footer'>
-            <input
-              type='text'
+            <TextareaAutosize
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder='질문을 입력하세요.'
+              minRows={1}
+              maxRows={5}
+              style={{
+                flex: 1,
+                marginRight: '5px',
+                padding: '8px',
+                borderRadius: '10px',
+                backgroundColor: '#f4f4f4',
+                border: '1px solid #ccc',
+                resize: 'none',
+              }}
             />
             <button onClick={handleSendMessage}>전송</button>
           </div>

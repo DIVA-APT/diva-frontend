@@ -3,9 +3,9 @@
   right: 20px;
   bottom: 20px;
   border: none;
-  background-color: #007bff;
+  background-color: #5a677e;
   color: #fff;
-  border-radius: 50%;
+  border-radius: 10px;
   width: 50px;
   height: 50px;
   font-size: 20px;
@@ -17,24 +17,30 @@
 .chatbot-window {
   position: fixed;
   right: 20px;
-  /* top: 250px; */
-  bottom: 0px;
-  width: 300px;
-  height: 70dvh;
+  bottom: 80px;
+  width: 350px;
+  height: 700px;
   background-color: #fff;
   z-index: 9999;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
+  border-radius: 10px;
 }
 
 .chatbot-header {
-  background-color: #007bff;
+  background-color: #f4f4f4;
   color: #fff;
   padding: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  border-radius: 10px 10px 0 0;
+}
+
+.chatbot-header-left {
+  display: flex;
   align-items: center;
 }
 
@@ -42,40 +48,92 @@
   flex: 1;
   padding: 10px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .chatbot-footer {
   border-top: 1px solid #ddd;
   display: flex;
   padding: 10px;
+  border-radius: 0 0 10px 10px;
 }
 
 .chatbot-footer input {
   flex: 1;
   margin-right: 5px;
   padding: 8px;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  color: #5a677e;
 }
 
 .chatbot-footer button {
   padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  background-color: #5a677e;
+  color: #fff;
+  cursor: pointer;
 }
 
-.message {
+/* 메시지 컨테이너: Flexbox를 이용한 정렬 */
+.message-container {
+  display: flex;
+  align-items: center;
   margin-bottom: 10px;
 }
 
-.message.user {
-  text-align: right;
-  color: #333;
+/* 사용자 메시지: 오른쪽 정렬 */
+.message-container.user {
+  justify-content: flex-end;
 }
 
-.message.bot {
-  text-align: left;
-  color: #007bff;
+/* 봇 메시지: 왼쪽 정렬 */
+.message-container.bot {
+  justify-content: flex-start;
 }
 
+/* 공통 메시지 스타일 */
+.message {
+  border-radius: 10px;
+  padding: 10px 15px;
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+/* 사용자 메시지 추가 스타일 */
+.message-container.user .message {
+  color: #ffffff;
+  background-color: #5a677e;
+}
+
+/* 봇 메시지 추가 스타일 */
+.message-container.bot .message {
+  color: #001e3f;
+  background-color: #f4f4f4;
+}
+
+/* 로딩 상태 스타일 */
 .loading {
   color: #007bff;
   text-align: center;
   padding: 10px;
+}
+
+/* 봇 메시지에 포함된 로고 이미지 스타일 */
+.service-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.chatbot-header h5 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #001e3f;
 }

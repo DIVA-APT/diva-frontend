@@ -221,7 +221,7 @@ const DetailPage = () => {
         >
           <div
             style={{
-              width: '60vw',
+              width: '1050px',
               border: '1px solid #ccc',
               boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
               padding: '20px',
@@ -236,6 +236,7 @@ const DetailPage = () => {
                 border: 'none',
                 backgroundColor: 'white',
                 padding: '15px',
+                borderRadius: '10px',
               }}
             >
               {isLoading[activeTopTab] ? (
@@ -348,6 +349,8 @@ const DetailPage = () => {
                 border: '1px solid #ccc',
                 boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
                 marginBottom: '20px',
+                backgroundColor: 'white',
+                borderRadius: '10px',
               }}
             >
               <h5>참고 자료 및 출처</h5>
