@@ -6,6 +6,8 @@ import ReactMarkdown from 'react-markdown';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import FullScreenLoader from '../components/FullScreenLoader';
+import './DetailPage.css';
+import { Loader2 } from 'lucide-react';
 
 const DetailPage = () => {
   const [content, setContent] = useState({
@@ -120,58 +122,95 @@ const DetailPage = () => {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          marginBottom: '20px',
-          paddingTop: '30px',
+          height: '80px',
+          backgroundColor: 'var(--color-2)',
+          // marginBottom: '20px',
+          // paddingTop: '30px',
         }}
       >
         <button
-          className={`btn ${
-            activeTopTab === 'financial' ? 'btn-primary' : 'btn-outline-primary'
-          }`}
-          style={{ margin: '0 10px' }}
+          className={'btn'}
+          style={{
+            width: '30%',
+            fontSize: '2rem',
+            color: activeTopTab === 'financial' ? 'white' : 'black',
+          }}
           onClick={() => {
-            // fetchContent('financial');
             setActiveTopTab('financial');
           }}
         >
-          {isLoading['financial'] ? '로딩 중..' : '재무제표'}
+          재무제표
+          {isLoading['financial'] ? (
+            <>
+              ..
+              <Loader2 className='spin' />
+            </>
+          ) : (
+            ''
+          )}
         </button>
         <button
-          className={`btn ${
-            activeTopTab === 'expert-analysis'
-              ? 'btn-primary'
-              : 'btn-outline-primary'
-          }`}
-          style={{ margin: '0 10px' }}
+          className={'btn'}
+          style={{
+            width: '30%',
+            fontSize: '2rem',
+            color: activeTopTab === 'expert-analysis' ? 'white' : 'black',
+          }}
           onClick={() => {
-            // fetchContent('expert-analysis');
             setActiveTopTab('expert-analysis');
           }}
         >
-          {isLoading['expert-analysis'] ? '로딩 중..' : '전문가 분석'}
+          전문가분석
+          {isLoading['expert-analysis'] ? (
+            <>
+              ..
+              <Loader2 className='spin' />
+            </>
+          ) : (
+            ''
+          )}
         </button>
-
         <button
-          className={`btn ${
-            activeTopTab === 'news' ? 'btn-primary' : 'btn-outline-primary'
-          }`}
-          style={{ margin: '0 10px' }}
+          className={'btn'}
+          style={{
+            width: '30%',
+            fontSize: '2rem',
+            color: activeTopTab === 'news' ? 'white' : 'black',
+          }}
           onClick={() => {
             // fetchContent('news');
             setActiveTopTab('news');
           }}
         >
-          {isLoading['news'] ? '로딩 중..' : '뉴스'}
+          뉴스
+          {isLoading['news'] ? (
+            <>
+              ..
+              <Loader2 className='spin' />
+            </>
+          ) : (
+            ''
+          )}
+        </button>
+        <button
+          className={'btn'}
+          style={{ width: '30%', fontSize: '2rem' }}
+          onClick={() => {
+            // setActiveTopTab('news');
+          }}
+        >
+          종합 보고서
         </button>
       </div>
 
       <div
         style={{
           padding: '20px',
-          maxWidth: '800px',
-          margin: 'auto',
+          maxWidth: '900px',
+          margin: '60px auto 0',
           border: '1px solid #ccc',
           boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
+          borderRadius: '1rem',
         }}
       >
         <div
@@ -180,6 +219,7 @@ const DetailPage = () => {
             minHeight: '150px',
             border: 'none',
             padding: '10px',
+            backgroundColor: 'white',
           }}
         >
           {isLoading[activeTopTab] ? (
