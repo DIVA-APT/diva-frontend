@@ -192,7 +192,7 @@ const DetailPage = () => {
           color: 'white',
           textAlign: 'center',
           margin: '30px 0',
-          fontSize: '3rem',
+          fontSize: '2rem',
         }}
       >
         {state.stock_name}
