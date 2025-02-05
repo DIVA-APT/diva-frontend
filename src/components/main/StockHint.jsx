@@ -1,20 +1,18 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
 import SelectModal from '../SelectModal';
 
 const StockHint = (props) => {
-  const naviation = useNavigate();
+  // const naviation = useNavigate();
 
-  const handleButtonClick = () => {
-    naviation(`/detail/${props.data.stock_code}`, {
-      state: {
-        stock_code: props.data.stock_code,
-        stock_name: props.data.stock_name,
-      },
-    });
-  };
+  // const handleButtonClick = () => {
+  //   naviation(`/detail/${props.data.stock_code}`, {
+  //     state: {
+  //       stock_code: props.data.stock_code,
+  //       stock_name: props.data.stock_name,
+  //     },
+  //   });
+  // };
 
   return (
     <div
