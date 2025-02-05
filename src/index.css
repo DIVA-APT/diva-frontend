@@ -5,6 +5,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'TimeRomanFont';
+  src: url('./assets/fonts/OPTITimes-Roman.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* 모든 요소에서 스크롤바 숨기기 */
 ::-webkit-scrollbar {
   display: none;

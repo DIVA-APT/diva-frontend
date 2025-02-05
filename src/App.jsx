@@ -15,7 +15,11 @@ const App = () => {
         <img src={logo1} width={50} height={50} alt='logo'></img>
         <h1
           className='col-sm-6'
-          style={{ color: '#001F3F', marginLeft: '10px' }}
+          style={{
+            color: '#001F3F',
+            marginLeft: '10px',
+            fontFamily: 'TimeRomanFont',
+          }}
         >
           <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
             DivA

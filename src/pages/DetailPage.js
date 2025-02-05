@@ -106,7 +106,7 @@ const DetailPage = () => {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          height: '80px',
+          height: '50px',
           backgroundColor: 'var(--color-2)',
           // marginBottom: '20px',
           // paddingTop: '30px',
@@ -116,7 +116,7 @@ const DetailPage = () => {
           className={'btn'}
           style={{
             width: '30%',
-            fontSize: '1.5rem',
+            fontSize: '1rem',
             color: activeTopTab === 'financial' ? 'white' : 'black',
           }}
           onClick={() => {
@@ -137,7 +137,7 @@ const DetailPage = () => {
           className={'btn'}
           style={{
             width: '30%',
-            fontSize: '1.5rem',
+            fontSize: '1rem',
             color: activeTopTab === 'expert-analysis' ? 'white' : 'black',
           }}
           onClick={() => {
@@ -158,7 +158,7 @@ const DetailPage = () => {
           className={'btn'}
           style={{
             width: '30%',
-            fontSize: '1.5rem',
+            fontSize: '1rem',
             color: activeTopTab === 'news' ? 'white' : 'black',
           }}
           onClick={() => {
@@ -178,7 +178,7 @@ const DetailPage = () => {
         </button>
         <button
           className={'btn'}
-          style={{ width: '30%', fontSize: '1.5rem' }}
+          style={{ width: '30%', fontSize: '1rem' }}
           onClick={() => {
             // setActiveTopTab('news');
           }}
