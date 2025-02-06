@@ -54,7 +54,7 @@ const MainPage = () => {
             className='text-center text-lg-start'
             style={{ marginBottom: '100px' }}
           >
-            <SubTitle text='Delivery of Investment Value by AI' />
+            <SubTitle text='Delivery of investment value by AI' />
             <MainTitle text='DivA' />
           </div>
 

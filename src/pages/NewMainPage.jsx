@@ -68,10 +68,12 @@ const NewMainPage = () => {
         animate={scrolled ? { y: -100, opacity: 0 } : { y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
-        <span style={{ color: 'var(--color-3)' }}>D</span>elivery of
-        <span style={{ color: 'var(--color-3)' }}> I</span>nvestment{' '}
-        <span style={{ color: 'var(--color-3)' }}>V</span>alue by{' '}
-        <span style={{ color: 'var(--color-3)' }}>A</span>I
+        <span style={{ fontFamily: 'TimeRomanFont' }}>
+          <span style={{ color: 'var(--color-3)' }}>D</span>elivery of
+          <span style={{ color: 'var(--color-3)' }}> i</span>nvestment{' '}
+          <span style={{ color: 'var(--color-3)' }}>v</span>alue by{' '}
+          <span style={{ color: 'var(--color-3)' }}>A</span>I
+        </span>
         {!scrolled && (
           <motion.div
             className='scroll-indicator'

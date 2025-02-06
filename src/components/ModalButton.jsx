@@ -12,6 +12,7 @@ const ModalButton = (props) => {
         취소
       </Button>
       <Button
+        sx={{ backgroundColor: 'var(--color-2)' }}
         variant='contained'
         onClick={() => {
           navigation(`/detail/${props.data.stock_code}`, {
