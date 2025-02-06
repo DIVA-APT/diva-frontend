@@ -100,9 +100,11 @@ const DetailPage = () => {
   // 3개 탭 -> report 순으로 비동기 호출
   useEffect(() => {
     (async () => {
-      await fetchContent('financial');
-      await fetchContent('expert-analysis');
-      await fetchContent('news');
+      await Promise.all([
+        fetchContent('financial'),
+        fetchContent('expert-analysis'),
+        fetchContent('news'),
+      ]);
       await fetchReport();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
