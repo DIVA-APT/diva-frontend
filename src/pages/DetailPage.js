@@ -14,24 +14,28 @@ import remarkGfm from 'remark-gfm';
 
 const DetailPage = () => {
   const [content, setContent] = useState({
-    financial: 'null',
-    'expert-analysis': null,
-    news: null,
+    financial: { content: '', sources: [] },
+    'expert-analysis': { content: '', sources: [] },
+    news: { content: '', sources: [] },
   });
+
+  const [report, setReport] = useState('');
+
+  // 탭 활성화 여부
+  const [activeTopTab, setActiveTopTab] = useState('financial');
   const [showVisualization, setShowVisualization] = useState(false);
   const [showReferences, setShowReferences] = useState(false);
-  const [report, setReport] = useState('');
-  const [referencesData, setReferencesData] = useState([]);
-  const [activeTopTab, setActiveTopTab] = useState('financial');
-  const [loadedCount, setLoadedCount] = useState(0);
 
-  const { state } = useLocation();
-
+  // 탭별 로딩 상태
   const [isLoading, setIsLoading] = useState({
     financial: true,
     'expert-analysis': true,
     news: true,
+    report: true,
   });
+  const [loadedCount, setLoadedCount] = useState(0);
+
+  const { state } = useLocation();
 
   const fetchContent = async (endpoint) => {
     try {
@@ -39,24 +43,35 @@ const DetailPage = () => {
       const response = await axios.post(
         `http://${process.env.REACT_APP_HOST}:8080/analysis/${endpoint}/${state.stock_code}`
       );
-      console.log('이거는 내용:', response.data.content);
-      setContent((prevState) => ({
-        ...prevState,
-        [endpoint]: response.data.content || '데이터가 없습니다',
+      console.log(endpoint, '응답 데이터:', response.data);
+
+      // 백엔드 응답 예시: { content: "...", sources: [ {title,description,url}, ... ] }
+      const { content: mainContent, sources } = response.data;
+
+      setContent((prev) => ({
+        ...prev,
+        [endpoint]: {
+          content: mainContent || '데이터가 없습니다.',
+          sources: sources || [],
+        },
       }));
     } catch (error) {
       console.error(error);
-      setContent((prevState) => ({
-        ...prevState,
-        [endpoint]: `${endpoint} 데이터를 불러오는데 실패하였습니다`,
+      setContent((prev) => ({
+        ...prev,
+        [endpoint]: {
+          content: `${endpoint} 데이터를 불러오는데 실패했습니다.`,
+          sources: [],
+        },
       }));
     } finally {
-      setIsLoading((prevState) => ({
-        ...prevState,
+      setIsLoading((prev) => ({
+        ...prev,
         [endpoint]: false,
       }));
       setLoadedCount((prev) => {
         if (prev === 0) {
+          // 첫 로딩된 탭을 기본 탭으로
           setActiveTopTab(endpoint);
         }
         return prev + 1;
@@ -74,121 +89,89 @@ const DetailPage = () => {
     } catch (error) {
       console.error(error);
       setReport('리포트 데이터를 불러오는 데 실패했습니다.');
+    } finally {
+      setIsLoading((prev) => ({
+        ...prev,
+        report: false,
+      }));
     }
   };
 
-  const fetchReferences = async () => {
-    try {
-      axios.defaults.withCredentials = true;
-      const response = await axios.post(
-        `http://${process.env.REACT_APP_HOST}:8080/analysis/source/${state.stock_code}`
-      );
-      setReferencesData(response.data.sources || []);
-    } catch (error) {
-      console.error(error);
-      setReferencesData([]);
-    }
-  };
-
+  // 3개 탭 -> report 순으로 비동기 호출
   useEffect(() => {
-    fetchContent('financial');
-    fetchContent('expert-analysis');
-    fetchContent('news');
+    (async () => {
+      await fetchContent('financial');
+      await fetchContent('expert-analysis');
+      await fetchContent('news');
+      await fetchReport();
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (
-    isLoading['financial'] &&
-    isLoading['expert-analysis'] &&
-    isLoading['news']
-  )
+    isLoading.financial ||
+    isLoading['expert-analysis'] ||
+    isLoading.news ||
+    isLoading.report
+  ) {
     return <FullScreenLoader />;
+  }
+
+  // report 탭이 아니라면 content에서 가져옴
+  const activeContent =
+    activeTopTab === 'report' ? null : content[activeTopTab];
+
+  const getButtonStyle = (tabName) => ({
+    width: '30%',
+    fontSize: '1rem',
+    color: activeTopTab === tabName ? 'white' : 'black',
+  });
 
   return (
     <div>
+      {/* 상단 탭 버튼들 */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'center',
           height: '50px',
           backgroundColor: 'var(--color-2)',
-          // marginBottom: '20px',
-          // paddingTop: '30px',
         }}
       >
         <button
-          className={'btn'}
-          style={{
-            width: '30%',
-            fontSize: '1rem',
-            color: activeTopTab === 'financial' ? 'white' : 'black',
-          }}
-          onClick={() => {
-            setActiveTopTab('financial');
-          }}
+          className='btn'
+          style={getButtonStyle('financial')}
+          onClick={() => setActiveTopTab('financial')}
         >
           재무제표
-          {isLoading['financial'] ? (
-            <>
-              ..
-              <Loader2 className='spin' />
-            </>
-          ) : (
-            ''
-          )}
         </button>
+
         <button
-          className={'btn'}
-          style={{
-            width: '30%',
-            fontSize: '1rem',
-            color: activeTopTab === 'expert-analysis' ? 'white' : 'black',
-          }}
-          onClick={() => {
-            setActiveTopTab('expert-analysis');
-          }}
+          className='btn'
+          style={getButtonStyle('expert-analysis')}
+          onClick={() => setActiveTopTab('expert-analysis')}
         >
           전문가분석
-          {isLoading['expert-analysis'] ? (
-            <>
-              ..
-              <Loader2 className='spin' />
-            </>
-          ) : (
-            ''
-          )}
         </button>
+
         <button
-          className={'btn'}
-          style={{
-            width: '30%',
-            fontSize: '1rem',
-            color: activeTopTab === 'news' ? 'white' : 'black',
-          }}
-          onClick={() => {
-            // fetchContent('news');
-            setActiveTopTab('news');
-          }}
+          className='btn'
+          style={getButtonStyle('news')}
+          onClick={() => setActiveTopTab('news')}
         >
           뉴스
-          {isLoading['news'] ? (
-            <>
-              ..
-              <Loader2 className='spin' />
-            </>
-          ) : (
-            ''
-          )}
         </button>
+
         <button
-          className={'btn'}
+          className='btn'
           style={{ width: '30%', fontSize: '1rem' }}
-          onClick={() => {
-            // setActiveTopTab('news');
-          }}
+          onClick={() => setActiveTopTab('report')}
         >
           종합 보고서
         </button>
       </div>
+
+      {/* 종목명 표시 */}
       <h2
         className='mb-md-0'
         style={{
@@ -201,6 +184,7 @@ const DetailPage = () => {
         {state.stock_name}
       </h2>
 
+      {/* 메인 내용 영역 */}
       <div
         style={{
           display: 'flex',
@@ -212,13 +196,12 @@ const DetailPage = () => {
       >
         <div
           style={{
-            // display: 'flex',
-            // justifyContent: 'center',
             width: '100%',
             maxHeight: '80dvh',
             overflowY: 'auto',
           }}
         >
+          {/* 탭 내용 박스 */}
           <div
             style={{
               width: '1050px',
@@ -227,6 +210,7 @@ const DetailPage = () => {
               padding: '20px',
               borderRadius: '1rem',
               margin: '0 auto',
+              backgroundColor: 'white',
             }}
           >
             <div
@@ -234,20 +218,23 @@ const DetailPage = () => {
                 width: '100%',
                 minHeight: '150px',
                 border: 'none',
-                backgroundColor: 'white',
                 padding: '15px',
                 borderRadius: '10px',
               }}
             >
-              {isLoading[activeTopTab] ? (
-                <Skeleton count={10} />
+              {activeTopTab === 'report' ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {report || '종합 보고서 정보가 없습니다.'}
+                </ReactMarkdown>
               ) : (
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {content[activeTopTab]}
+                  {activeContent.content}
                 </ReactMarkdown>
               )}
             </div>
           </div>
+
+          {/* 추가 버튼 */}
           <ul
             className='nav nav-pills-custom'
             style={{
@@ -257,92 +244,31 @@ const DetailPage = () => {
               paddingTop: '30px',
             }}
           >
-            {/* <li className='nav-item'>
-            <button
-              className='nav-link btn'
-              onClick={async () => {
-                setShowVisualization(false);
-                setShowReferences(false);
-                await fetchReport();
-              }}
-            >
-              종합 리포트 생성
-            </button>
-          </li>
-          <li className='nav-item'>
-            <button
-              className='nav-link btn'
-              onClick={() => {
-                setShowVisualization(!showVisualization);
-                setShowReferences(false);
-                // report 비움
-                setReport('');
-              }}
-            >
-              시각화 데이터
-            </button>
-          </li> */}
-            <li className='nav-item'>
-              <button
-                className='nav-link btn'
-                onClick={async () => {
-                  setShowReferences(!showReferences);
-                  setShowVisualization(false);
-                  // 종합 리포트 숨김
-                  setReport('');
-                  if (!showReferences) {
-                    await fetchReferences();
-                  }
-                }}
-              >
-                참고 자료 및 출처
-              </button>
-            </li>
+            {activeTopTab !== 'report' && (
+              <li className='nav-item'>
+                <button
+                  className='nav-link btn'
+                  onClick={() => {
+                    setShowReferences(!showReferences);
+                    setShowVisualization(false);
+                  }}
+                >
+                  참고 자료 및 출처
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       </div>
+
+      {/* 챗봇 버튼 */}
       <ChatBotButton />
 
+      {/* 추가 섹션들 */}
       <div>
-        {!showVisualization && !showReferences && report && (
-          <div style={{ maxWidth: '800px', margin: '20px auto' }}>
-            <div
-              style={{
-                padding: '20px',
-                border: '1px solid #ccc',
-                boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
-                marginBottom: '20px',
-              }}
-            >
-              <h5>종합 리포트</h5>
-              <p>{report}</p>
-            </div>
-          </div>
-        )}
-
-        {showVisualization && (
-          <div style={{ maxWidth: '800px', margin: '20px auto' }}>
-            <div
-              style={{
-                padding: '20px',
-                border: '1px solid #ccc',
-                boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
-                marginBottom: '20px',
-                textAlign: 'center',
-              }}
-            >
-              <h5>시각화 데이터</h5>
-              <img
-                src='/img/chart.png'
-                alt='Visualization'
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </div>
-          </div>
-        )}
-
-        {showReferences && (
-          <div style={{ maxWidth: '800px', margin: '20px auto' }}>
+        {/* 참고 자료 및 출처 (report 탭 제외) */}
+        {showReferences && activeTopTab !== 'report' && (
+          <div style={{ maxWidth: '1000px', margin: '20px auto' }}>
             <div
               style={{
                 padding: '20px',
@@ -354,29 +280,30 @@ const DetailPage = () => {
               }}
             >
               <h5>참고 자료 및 출처</h5>
-              {referencesData.length > 0 ? (
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                  <thead>
-                    <tr>
-                      <th style={{ border: '1px solid #ccc', padding: '8px' }}>
-                        사용된 핵심 요약 데이터의 출처
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {referencesData.map((source, idx) => (
-                      <tr key={idx}>
-                        <td
-                          style={{ border: '1px solid #ccc', padding: '8px' }}
+              {activeContent.sources.length > 0 ? (
+                activeContent.sources.map((item, idx) => (
+                  <div key={idx} style={{ marginBottom: '1rem' }}>
+                    <p style={{ margin: 0, fontWeight: 'bold' }}>
+                      {item.title}
+                    </p>
+                    <p style={{ margin: '0.5rem 0' }}>{item.description}</p>
+                    <p style={{ margin: 0 }}>
+                      {item.url ? (
+                        <a
+                          href={item.url}
+                          target='_blank'
+                          rel='noopener noreferrer'
                         >
-                          {source}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                          {item.url}
+                        </a>
+                      ) : (
+                        'URL이 없습니다.'
+                      )}
+                    </p>
+                  </div>
+                ))
               ) : (
-                <p>출처 데이터를 찾을 수 없습니다.</p>
+                <p> 출처가 없습니다.</p>
               )}
             </div>
           </div>
