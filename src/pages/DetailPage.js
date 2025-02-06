@@ -109,9 +109,9 @@ const DetailPage = () => {
   }, []);
 
   if (
-    isLoading.financial ||
-    isLoading['expert-analysis'] ||
-    isLoading.news ||
+    isLoading.financial &&
+    isLoading['expert-analysis'] &&
+    isLoading.news &&
     isLoading.report
   ) {
     return <FullScreenLoader />;
@@ -144,6 +144,7 @@ const DetailPage = () => {
           onClick={() => setActiveTopTab('financial')}
         >
           재무제표
+          {isLoading['financial'] && <Loader2 className='spin' />}
         </button>
 
         <button
@@ -152,6 +153,7 @@ const DetailPage = () => {
           onClick={() => setActiveTopTab('expert-analysis')}
         >
           전문가분석
+          {isLoading['expert-analysis'] && <Loader2 className='spin' />}
         </button>
 
         <button
@@ -160,6 +162,7 @@ const DetailPage = () => {
           onClick={() => setActiveTopTab('news')}
         >
           뉴스
+          {isLoading['news'] && <Loader2 className='spin' />}
         </button>
 
         <button
@@ -168,6 +171,7 @@ const DetailPage = () => {
           onClick={() => setActiveTopTab('report')}
         >
           종합 보고서
+          {isLoading['report'] && <Loader2 className='spin' />}
         </button>
       </div>
 
