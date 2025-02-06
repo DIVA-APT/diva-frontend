@@ -3,6 +3,8 @@ import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 import './ChatBotButton.css';
 import logo1 from '../assets/logo-1.webp';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const ChatBotButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,7 +84,11 @@ const ChatBotButton = () => {
                     className='service-logo'
                   />
                 )}
-                <div className='message'>{msg.text}</div>
+                <div className='message'>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {msg.text}
+                  </ReactMarkdown>
+                </div>
               </div>
             ))}
             {isLoading && <div className='loading'>잠시만 기다려주세요...</div>}
