@@ -99,14 +99,12 @@ const DetailPage = () => {
 
   // 3개 탭 -> report 순으로 비동기 호출
   useEffect(() => {
-    (async () => {
-      await Promise.all([
-        fetchContent('financial'),
-        fetchContent('expert-analysis'),
-        fetchContent('news'),
-      ]);
-      await fetchReport();
-    })();
+    Promise.all([
+      fetchContent('financial'),
+      fetchContent('expert-analysis'),
+      fetchContent('news'),
+    ]).then(() => fetchReport());
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -260,6 +258,51 @@ const DetailPage = () => {
               </li>
             )}
           </ul>
+
+          <div>
+            {/* 참고 자료 및 출처 (report 탭 제외) */}
+            {showReferences && activeTopTab !== 'report' && (
+              <div style={{ maxWidth: '1000px', margin: '20px auto' }}>
+                <div
+                  style={{
+                    padding: '20px',
+                    border: '1px solid #ccc',
+                    boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
+                    marginBottom: '20px',
+                    backgroundColor: 'white',
+                    borderRadius: '10px',
+                  }}
+                >
+                  <h5>참고 자료 및 출처</h5>
+                  {activeContent.sources.length > 0 ? (
+                    activeContent.sources.map((item, idx) => (
+                      <div key={idx} style={{ marginBottom: '1rem' }}>
+                        <p style={{ margin: 0, fontWeight: 'bold' }}>
+                          {item.title}
+                        </p>
+                        <p style={{ margin: '0.5rem 0' }}>{item.description}</p>
+                        <p style={{ margin: 0 }}>
+                          {item.url ? (
+                            <a
+                              href={item.url}
+                              target='_blank'
+                              rel='noopener noreferrer'
+                            >
+                              {item.url}
+                            </a>
+                          ) : (
+                            'URL이 없습니다.'
+                          )}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <p> 출처가 없습니다.</p>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -267,50 +310,6 @@ const DetailPage = () => {
       <ChatBotButton />
 
       {/* 추가 섹션들 */}
-      <div>
-        {/* 참고 자료 및 출처 (report 탭 제외) */}
-        {showReferences && activeTopTab !== 'report' && (
-          <div style={{ maxWidth: '1000px', margin: '20px auto' }}>
-            <div
-              style={{
-                padding: '20px',
-                border: '1px solid #ccc',
-                boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
-                marginBottom: '20px',
-                backgroundColor: 'white',
-                borderRadius: '10px',
-              }}
-            >
-              <h5>참고 자료 및 출처</h5>
-              {activeContent.sources.length > 0 ? (
-                activeContent.sources.map((item, idx) => (
-                  <div key={idx} style={{ marginBottom: '1rem' }}>
-                    <p style={{ margin: 0, fontWeight: 'bold' }}>
-                      {item.title}
-                    </p>
-                    <p style={{ margin: '0.5rem 0' }}>{item.description}</p>
-                    <p style={{ margin: 0 }}>
-                      {item.url ? (
-                        <a
-                          href={item.url}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                        >
-                          {item.url}
-                        </a>
-                      ) : (
-                        'URL이 없습니다.'
-                      )}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p> 출처가 없습니다.</p>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 };
